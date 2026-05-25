@@ -1,9 +1,8 @@
 import SwiftUI
+import AppKit
 
 struct MenuBarView: View {
     @ObservedObject var viewModel: MenuBarViewModel
-    @State private var showingActivationDialog = false
-    @State private var showingSettings = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -15,11 +14,6 @@ struct MenuBarView: View {
         }
         .padding()
         .frame(width: 280)
-        .sheet(isPresented: $showingActivationDialog) {
-            ConfirmationDialog(mode: .activate) {
-                viewModel.confirmActivation()
-            }
-        }
     }
 
     private var statusHeader: some View {
@@ -31,7 +25,7 @@ struct MenuBarView: View {
                 Text("CleanKeys")
                     .font(.headline)
                 Spacer()
-                Text(viewModel.state.description)
+                Text(viewModel.state.displayName)
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -67,7 +61,7 @@ struct MenuBarView: View {
         VStack(alignment: .leading, spacing: 4) {
             if viewModel.state == .cleaning {
                 exitButton
-                extendOverlayButton
+                overlayPinButton
             } else {
                 activateButton
             }
@@ -75,7 +69,11 @@ struct MenuBarView: View {
     }
 
     private var activateButton: some View {
-        Button(action: { showingActivationDialog = true }) {
+        Button(action: {
+            DialogWindowController.shared.showConfirmation(mode: .activate) {
+                viewModel.confirmActivation()
+            }
+        }) {
             HStack {
                 Image(systemName: "hand.tap")
                 Text("Activate Cleaning Mode")
@@ -85,7 +83,11 @@ struct MenuBarView: View {
     }
 
     private var exitButton: some View {
-        Button(action: { viewModel.exit() }) {
+        Button(action: {
+            DialogWindowController.shared.showConfirmation(mode: .exit) {
+                viewModel.exit()
+            }
+        }) {
             HStack {
                 Image(systemName: "escape")
                 Text("Exit Cleaning Mode")
@@ -95,7 +97,7 @@ struct MenuBarView: View {
         .foregroundColor(.red)
     }
 
-    private var extendOverlayButton: some View {
+    private var overlayPinButton: some View {
         Button(action: { viewModel.toggleOverlayPin() }) {
             HStack {
                 Image(systemName: viewModel.isOverlayPinned ? "pin.slash" : "pin")

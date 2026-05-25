@@ -34,6 +34,7 @@ class StateMachine: ObservableObject {
     private func isValidTransition(from current: AppState, to target: AppState) -> Bool {
         switch (current, target) {
         case (.normal, .activated): return true
+        case (.normal, .cleaning): return true
         case (.activated, .cleaning): return true
         case (.activated, .normal): return true
         case (.cleaning, .exiting): return true

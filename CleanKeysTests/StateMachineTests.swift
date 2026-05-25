@@ -30,6 +30,11 @@ final class StateMachineTests: XCTestCase {
         XCTAssertEqual(stateMachine.state, .cleaning)
     }
 
+    func testNormalToCleaningDirectTransition() {
+        stateMachine.transition(to: .cleaning)
+        XCTAssertEqual(stateMachine.state, .cleaning)
+    }
+
     func testCleaningToExitingTransition() {
         stateMachine.transition(to: .activated)
         stateMachine.transition(to: .cleaning)
@@ -45,16 +50,16 @@ final class StateMachineTests: XCTestCase {
         XCTAssertEqual(stateMachine.state, .normal)
     }
 
-    func testInvalidTransitionNormalToCleaning() {
-        stateMachine.transition(to: .cleaning)
-        XCTAssertEqual(stateMachine.state, .normal)
-    }
-
     func testInvalidTransitionCleaningToNormal() {
         stateMachine.transition(to: .activated)
         stateMachine.transition(to: .cleaning)
         stateMachine.transition(to: .normal)
         XCTAssertEqual(stateMachine.state, .cleaning)
+    }
+
+    func testInvalidTransitionNormalToExiting() {
+        stateMachine.transition(to: .exiting)
+        XCTAssertEqual(stateMachine.state, .normal)
     }
 
     func testFullLifecycle() {

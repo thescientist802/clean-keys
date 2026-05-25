@@ -16,10 +16,18 @@ class MenuBarViewModel: ObservableObject {
         self.failSafeManager = failSafeManager
 
         stateMachine.$state
-            .assign(to: &$state)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newState in
+                self?.state = newState
+            }
+            .store(in: &cancellables)
 
         failSafeManager.$countdownText
-            .assign(to: &$countdownText)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] text in
+                self?.countdownText = text
+            }
+            .store(in: &cancellables)
     }
 
     func activate() {

@@ -1,44 +1,45 @@
 import SwiftUI
 import AppKit
 
-class OverlayWindowController {
+class OverlayWindowController: ObservableObject {
 
     private var window: NSWindow?
     private var autoHideTimer: Timer?
-    private var isPinned: Bool = false
+    @Published var isPinned: Bool = false
 
     func show(countdownText: String, onPinToggle: @escaping () -> Void) {
         dismiss()
 
-        let viewModel = OverlayViewModel(countdownText: countdownText, onPinToggle: onPinToggle)
-        let contentView = OverlayView(viewModel: viewModel)
+        let overlayViewModel = OverlayViewModel(countdownText: countdownText, onPinToggle: onPinToggle)
+        let contentView = OverlayView(viewModel: overlayViewModel)
             .frame(minWidth: 320, maxWidth: .infinity, minHeight: 180, maxHeight: .infinity)
 
         let hostingView = NSHostingView(rootView: contentView)
         hostingView.translatesAutoresizingMaskIntoConstraints = false
 
-        let window = NSPanel(
+        let panel = NSPanel(
             contentRect: NSRect(x: 0, y: 0, width: 400, height: 200),
             styleMask: [.titled, .closable, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
-        window.contentView = hostingView
-        window.level = .floating
-        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-        window.titlebarAppearsTransparent = true
-        window.isMovableByWindowBackground = true
-        window.hasShadow = true
-        window.makeKeyAndOrderFront(nil)
+        panel.contentView = hostingView
+        panel.level = .floating
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        panel.titlebarAppearsTransparent = true
+        panel.isMovableByWindowBackground = true
+        panel.hasShadow = true
+        panel.title = "Cleaning Mode"
 
         let screen = NSScreen.main!
-        let frame = window.frame
-        window.setFrameOrigin(NSPoint(
-            x: screen.frame.width - frame.width - 20,
-            y: screen.frame.height - frame.height - 80
+        let panelFrame = panel.frame
+        panel.setFrameOrigin(NSPoint(
+            x: screen.frame.maxX - panelFrame.width - 20,
+            y: screen.frame.maxY - panelFrame.height - 80
         ))
 
-        self.window = window
+        panel.makeKeyAndOrderFront(nil)
+        self.window = panel
 
         if !isPinned {
             autoHideTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] _ in

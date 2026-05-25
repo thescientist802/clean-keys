@@ -1,9 +1,50 @@
 import SwiftUI
+import AppKit
 
-struct ConfirmationDialog: View {
-    let mode: DialogMode
-    let onConfirm: () -> Void
-    @Environment(\.dismiss) private var dismiss
+class DialogWindowController {
+
+    static let shared = DialogWindowController()
+
+    private var panel: NSPanel?
+
+    func showConfirmation(mode: DialogMode, onConfirm: @escaping () -> Void) {
+        panel?.orderOut(nil)
+
+        let dialogViewModel = DialogViewModel(mode: mode, onConfirm: onConfirm)
+        let contentView = ConfirmationDialogView(viewModel: dialogViewModel)
+            .frame(width: 380, height: 220)
+
+        let hostingView = NSHostingView(rootView: contentView)
+        hostingView.translatesAutoresizingMaskIntoConstraints = false
+
+        let panel = NSPanel(
+            contentRect: NSRect(x: 0, y: 0, width: 380, height: 220),
+            styleMask: [.titled, .closable, .nonactivatingPanel, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
+        )
+        panel.contentView = hostingView
+        panel.level = .modalPanel
+        panel.isMovable = false
+        panel.titlebarAppearsTransparent = true
+        panel.hasShadow = true
+        panel.backgroundColor = NSColor.windowBackgroundColor
+        panel.isOpaque = false
+
+        let screen = NSScreen.main!
+        let panelFrame = panel.frame
+        panel.setFrameOrigin(NSPoint(
+            x: screen.frame.midX - panelFrame.width / 2,
+            y: screen.frame.midY - panelFrame.height / 2
+        ))
+
+        panel.makeKeyAndOrderFront(nil)
+        self.panel = panel
+    }
+}
+
+struct ConfirmationDialogView: View {
+    @ObservedObject var viewModel: DialogViewModel
 
     var body: some View {
         VStack(spacing: 20) {
@@ -12,22 +53,21 @@ struct ConfirmationDialog: View {
             buttonSection
         }
         .padding(24)
-        .frame(width: 340)
     }
 
     private var iconSection: some View {
-        Image(systemName: mode.iconName)
+        Image(systemName: viewModel.mode.iconName)
             .font(.system(size: 48))
-            .foregroundColor(mode.iconColor)
+            .foregroundColor(viewModel.mode.iconColor)
             .symbolEffect(.pulse)
     }
 
     private var messageSection: some View {
         VStack(spacing: 8) {
-            Text(mode.title)
+            Text(viewModel.mode.title)
                 .font(.title2)
                 .fontWeight(.bold)
-            Text(mode.message)
+            Text(viewModel.mode.message)
                 .font(.body)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -36,16 +76,28 @@ struct ConfirmationDialog: View {
 
     private var buttonSection: some View {
         HStack(spacing: 12) {
-            Button("Cancel") { dismiss() }
-                .buttonStyle(.bordered)
+            Button("Cancel") {
+                DialogWindowController.shared.panel?.orderOut(nil)
+            }
+            .buttonStyle(.bordered)
 
-            Button(mode.confirmTitle) {
-                onConfirm()
-                dismiss()
+            Button(viewModel.mode.confirmTitle) {
+                viewModel.onConfirm()
+                DialogWindowController.shared.panel?.orderOut(nil)
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
         }
+    }
+}
+
+class DialogViewModel: ObservableObject {
+    let mode: DialogMode
+    let onConfirm: () -> Void
+
+    init(mode: DialogMode, onConfirm: @escaping () -> Void) {
+        self.mode = mode
+        self.onConfirm = onConfirm
     }
 }
 

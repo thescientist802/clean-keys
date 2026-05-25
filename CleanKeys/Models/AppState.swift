@@ -15,7 +15,7 @@ enum AppState: String, Codable, CaseIterable {
         }
     }
 
-    var description: String {
+    var displayName: String {
         switch self {
         case .normal: return "Normal"
         case .activated: return "Activated"

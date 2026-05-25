@@ -9,33 +9,22 @@ class PermissionManager {
     }
 
     var isInputMonitoringGranted: Bool {
-        checkInputMonitoringPermission()
+        AXIsProcessTrusted()
     }
 
     func requestAllPermissions(completion: @escaping (Bool) -> Void) {
         let accessibility = requestAccessibility()
-        let inputMonitoring = requestInputMonitoring()
-        completion(accessibility && inputMonitoring)
-    }
-
-    private func checkInputMonitoringPermission() -> Bool {
-        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: false]
-        return AXIsProcessTrustedWithOptions(options as CFDictionary)
+        completion(accessibility)
     }
 
     private func requestAccessibility() -> Bool {
         if AXIsProcessTrusted() { return true }
 
-        let systemWideElement = AXUIElementCreateSystemWide()
-        _ = AXUIElementIsTrusted(systemWideElement)
-
-        return AXIsProcessTrusted()
-    }
-
-    private func requestInputMonitoring() -> Bool {
-        let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true]
+        let options: [String: Any] = [
+            kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true
+        ]
         AXIsProcessTrustedWithOptions(options as CFDictionary)
-        return checkInputMonitoringPermission()
+        return AXIsProcessTrusted()
     }
 
     func openAccessibilitySettings() {

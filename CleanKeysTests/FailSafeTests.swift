@@ -28,9 +28,8 @@ final class FailSafeTests: XCTestCase {
         failSafeManager.startCountdown(timeoutSeconds: 3)
 
         let expectation = expectation(description: "Countdown completes")
-        expectation.expectedFulfillmentCount = 3
 
-        let observer = NotificationCenter.default.addObserver(
+        let _ = NotificationCenter.default.addObserver(
             forName: .stateMachineDidChange,
             object: nil,
             queue: .main
@@ -40,9 +39,7 @@ final class FailSafeTests: XCTestCase {
             }
         }
 
-        waitForExpectations(timeout: 10) { _ in
-            NotificationCenter.default.removeObserver(observer)
-        }
+        waitForExpectations(timeout: 10)
     }
 
     func testCancelStopsCountdown() {

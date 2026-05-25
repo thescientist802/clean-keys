@@ -1,16 +1,20 @@
-// swift-tools-version:5.9
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
 import SwiftUI
 import Foundation
 
 @main
 struct CleanKeysApp: App {
     @NSApplicationDelegateAdaptor(AppLifecycle.shared) private var appLifecycle
+    @StateObject private var viewModel: MenuBarViewModel
+
+    init() {
+        let vm = AppLifecycle.shared.menuBarViewModel
+        _viewModel = StateObject(wrappedValue: vm)
+    }
 
     var body: some Scene {
-        MenuBarExtra("", systemImage: appLifecycle.stateMachine.state.appIconName) {
-            MenuBarView(viewModel: appLifecycle.menuBarViewModel)
-        }.menuBarExtraStyle(.window)
+        MenuBarExtra("", systemImage: viewModel.state.appIconName) {
+            MenuBarView(viewModel: viewModel)
+        }
+        .menuBarExtraStyle(.window)
     }
 }
