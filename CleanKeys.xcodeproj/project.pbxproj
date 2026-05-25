@@ -1,0 +1,664 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1001001 /* CleanKeysApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001001; };
+		A1001002 /* AppLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001002; };
+		A1001003 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001003; };
+		A1001004 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001004; };
+		A1001005 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001005; };
+		A1001006 /* EventTapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001006; };
+		A1001007 /* FailSafeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001007; };
+		A1001008 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001008; };
+		A1001009 /* SystemObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001009; };
+		A1001010 /* WatchdogHeartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001010; };
+		A1001011 /* MenuBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001011; };
+		A1001012 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001012; };
+		A1001013 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001013; };
+		A1001014 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001014; };
+		A1001015 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2001015; };
+		A1001016 /* CleanKeys.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = A2001016; };
+		A1001017 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2001017; };
+		A1001020 /* StateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001020; };
+		A1001021 /* FailSafeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001021; };
+		A1001022 /* EventTapCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001022; };
+		A1001030 /* WatchdogAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001030; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A2001001 /* CleanKeysApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanKeysApp.swift; sourceTree = "<group>"; };
+		A2001002 /* AppLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycle.swift; sourceTree = "<group>"; };
+		A2001003 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		A2001004 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		A2001005 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
+		A2001006 /* EventTapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTapService.swift; sourceTree = "<group>"; };
+		A2001007 /* FailSafeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailSafeManager.swift; sourceTree = "<group>"; };
+		A2001008 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
+		A2001009 /* SystemObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemObserver.swift; sourceTree = "<group>"; };
+		A2001010 /* WatchdogHeartbeat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogHeartbeat.swift; sourceTree = "<group>"; };
+		A2001011 /* MenuBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarViewModel.swift; sourceTree = "<group>"; };
+		A2001012 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		A2001013 /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
+		A2001014 /* ConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialog.swift; sourceTree = "<group>"; };
+		A2001015 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2001016 /* CleanKeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CleanKeys.entitlements; sourceTree = "<group>"; };
+		A2001017 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A2001020 /* StateMachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachineTests.swift; sourceTree = "<group>"; };
+		A2001021 /* FailSafeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailSafeTests.swift; sourceTree = "<group>"; };
+		A2001022 /* EventTapCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTapCallbackTests.swift; sourceTree = "<group>"; };
+		A2001030 /* WatchdogAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogAgent.swift; sourceTree = "<group>"; };
+		A3001001 /* CleanKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3001002 /* CleanKeysTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleanKeysTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3001003 /* CleanKeysWatchdog */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.exec"; includeInIndex = 0; path = CleanKeysWatchdog; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A4001001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4001002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4001003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A5001000 /* CleanKeys */ = {
+			isa = PBXGroup;
+			children = (
+				A5001010 /* App */,
+				A5001020 /* Models */,
+				A5001030 /* Services */,
+				A5001040 /* ViewModels */,
+				A5001050 /* Views */,
+				A5001060 /* Resources */,
+			);
+			path = CleanKeys;
+			sourceTree = "<group>";
+		};
+		A5001010 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A2001001,
+				A2001002,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A5001020 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A2001003,
+				A2001004,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A5001030 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A2001005,
+				A2001006,
+				A2001007,
+				A2001008,
+				A2001009,
+				A2001010,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A5001040 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A2001011,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A5001050 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A2001012,
+				A2001013,
+				A2001014,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A5001060 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A2001015,
+				A2001016,
+				A2001017,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A5001070 /* CleanKeysTests */ = {
+			isa = PBXGroup;
+			children = (
+				A2001020,
+				A2001021,
+				A2001022,
+			);
+			path = CleanKeysTests;
+			sourceTree = "<group>";
+		};
+		A5001080 /* CleanKeysWatchdog */ = {
+			isa = PBXGroup;
+			children = (
+				A2001030,
+			);
+			path = CleanKeysWatchdog;
+			sourceTree = "<group>";
+		};
+		A5001100 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A3001001,
+				A3001002,
+				A3001003,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A5002000 = {
+			isa = PBXGroup;
+			children = (
+				A5001000,
+				A5001070,
+				A5001080,
+				A5001100,
+			);
+			sourceTree = "<group>";
+			location = 9;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A6001001 /* CleanKeys */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7001001;
+			buildPhases = (
+				A8001001,
+				A4001001,
+				A9001001,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CleanKeys;
+			productName = CleanKeys;
+			productReference = A3001001;
+			productType = "com.apple.product-type.application";
+		};
+		A6001002 /* CleanKeysTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7001002;
+			buildPhases = (
+				A8001002,
+				A4001002,
+				A9001002,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A6002001 /* CleanKeys */,
+			);
+			name = CleanKeysTests;
+			productName = CleanKeysTests;
+			productReference = A3001002;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A6001003 /* CleanKeysWatchdog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7001003;
+			buildPhases = (
+				A8001003,
+				A4001003,
+				A9001003,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CleanKeysWatchdog;
+			productName = CleanKeysWatchdog;
+			productReference = A3001003;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXTargetDependency section */
+		A6002001 /* CleanKeys */ = {
+			isa = PBXTargetDependency;
+			target = A6001001;
+			targetProxy = A6002010;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		A6002010 = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A6003000;
+			proxyType = 1;
+			remoteGlobalIDString = A6001001;
+			remoteInfo = CleanKeys;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXProject section */
+		A6003000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A6001001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					A6001002 = {
+						CreatedOnToolsVersion = 15.0;
+						TestPlanBundleKey = A6001002;
+					};
+					A6001003 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A7003000;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A5002000;
+			productRefGroup = A5001100;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A6001001,
+				A6001002,
+				A6001003,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A9001001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1001015,
+				A1001016,
+				A1001017,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9001002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9001003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A8001001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1001001,
+				A1001002,
+				A1001003,
+				A1001004,
+				A1001005,
+				A1001006,
+				A1001007,
+				A1001008,
+				A1001009,
+				A1001010,
+				A1001011,
+				A1001012,
+				A1001013,
+				A1001014,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8001002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1001020,
+				A1001021,
+				A1001022,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8001003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1001030,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A7001010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CleanKeys/Resources/CleanKeys.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CleanKeys/Resources/Info.plist;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_KEY_NSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		A7001011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CleanKeys/Resources/CleanKeys.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CleanKeys/Resources/Info.plist;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_KEY_NSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		A7001020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CleanKeys.app/Contents/MacOS/CleanKeys";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
+				MARKETING_VERSION = 1.0.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		A7001021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CleanKeys.app/Contents/MacOS/CleanKeys";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
+				MARKETING_VERSION = 1.0.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		A7001030 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
+				MARKETING_VERSION = 1.0.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys.watchdog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		A7001031 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
+				MARKETING_VERSION = 1.0.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys.watchdog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		A7003010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A7003011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A7001001 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7001010,
+				A7001011,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7001002 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7001020,
+				A7001021,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7001003 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7001030,
+				A7001031,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7003000 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7003010,
+				A7003011,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = A6003000;
+}

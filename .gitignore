@@ -1,6 +1,5 @@
 build/
 DerivedData/
-*.xcodeproj/
 *.xcworkspace/
 *.swiftpm/
 .DS_Store
@@ -18,6 +17,8 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata
+CleanKeys.xcodeproj/project.xcworkspace/
+CleanKeys.xcodeproj/xcuserdata/
 *.xccheckout
 *.moved-aside
 *.xcuserstate
