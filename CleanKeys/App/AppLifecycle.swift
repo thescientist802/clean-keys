@@ -1,8 +1,9 @@
 import Foundation
 import AppKit
-import Combine
 
 class AppLifecycle: NSObject, NSApplicationDelegate {
+
+    static let shared = AppLifecycle()
 
     let stateMachine: StateMachine
     let eventTapService: EventTapService

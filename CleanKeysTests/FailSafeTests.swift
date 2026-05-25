@@ -29,11 +29,11 @@ final class FailSafeTests: XCTestCase {
 
         let expectation = expectation(description: "Countdown completes")
 
-        let _ = NotificationCenter.default.addObserver(
+        NotificationCenter.default.addObserver(
             forName: .stateMachineDidChange,
             object: nil,
             queue: .main
-        ) { notification in
+        ) { [weak self] notification in
             if let newState = notification.userInfo?["newState"] as? AppState, newState == .exiting {
                 expectation.fulfill()
             }

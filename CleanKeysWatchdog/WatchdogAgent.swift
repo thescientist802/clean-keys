@@ -47,12 +47,12 @@ class WatchdogAgent {
     private func forceRecovery() {
         guard let cleanKeysProcess = findCleanKeysProcess() else { return }
 
-        cleanKeysProcess.terminate()
+        cleanKeysProcess.forceTerminate()
         removeHeartbeat()
     }
 
-    private func findCleanKeysProcess() -> ProcessInfo? {
-        return nil
+    private func findCleanKeysProcess() -> NSRunningApplication? {
+        NSRunningApplication.runningApplications(withBundleIdentifier: "com.scientist.CleanKeys").first
     }
 
     private func removeHeartbeat() {
