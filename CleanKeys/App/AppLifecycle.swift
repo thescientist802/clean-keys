@@ -1,9 +1,8 @@
 import Foundation
 import AppKit
+import Combine
 
 class AppLifecycle: NSObject, NSApplicationDelegate {
-
-    static let shared = AppLifecycle()
 
     let stateMachine: StateMachine
     let eventTapService: EventTapService
@@ -17,7 +16,7 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
 
     private let singletonLockPath = "/tmp/com.scientist.CleanKeys.lock"
 
-    override private init() {
+    override init() {
         stateMachine = StateMachine()
         eventTapService = EventTapService(stateMachine: stateMachine)
         failSafeManager = FailSafeManager(stateMachine: stateMachine)
@@ -30,11 +29,11 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
         super.init()
 
         setupStateObserver()
-        enforceSingleton()
-        restoreState()
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        enforceSingleton()
+        restoreState()
         systemObserver.startObserving()
         watchdogHeartbeat.start()
     }

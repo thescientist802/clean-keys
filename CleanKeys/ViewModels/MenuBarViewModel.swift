@@ -48,9 +48,7 @@ class MenuBarViewModel: ObservableObject {
 
     func toggleOverlayPin() {
         isOverlayPinned.toggle()
-        let settings = Settings.load()
-        var updatedSettings = settings
-        updatedSettings.overlayPinned = isOverlayPinned
-        try? updatedSettings.save()
+        Settings.shared.overlayPinned = isOverlayPinned
+        try? Settings.shared.save()
     }
 }

@@ -3,17 +3,11 @@ import Foundation
 
 @main
 struct CleanKeysApp: App {
-    @NSApplicationDelegateAdaptor(AppLifecycle.shared) private var appLifecycle
-    @StateObject private var viewModel: MenuBarViewModel
-
-    init() {
-        let vm = AppLifecycle.shared.menuBarViewModel
-        _viewModel = StateObject(wrappedValue: vm)
-    }
+    @NSApplicationDelegateAdaptor(AppLifecycle()) private var appLifecycle
 
     var body: some Scene {
-        MenuBarExtra("", systemImage: viewModel.state.appIconName) {
-            MenuBarView(viewModel: viewModel)
+        MenuBarExtra("", systemImage: appLifecycle.menuBarViewModel.state.appIconName) {
+            MenuBarView(viewModel: appLifecycle.menuBarViewModel)
         }
         .menuBarExtraStyle(.window)
     }

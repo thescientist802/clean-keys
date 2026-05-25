@@ -1,10 +1,17 @@
 import Foundation
+import Combine
 
-struct Settings: Codable {
-    var timeoutSeconds: Int
-    var overlayPinned: Bool
-    var hardwareFailSafeEnabled: Bool
-    var soundWarningsEnabled: Bool
+class Settings: ObservableObject, Codable {
+
+    @Published var timeoutSeconds: Int
+    @Published var overlayPinned: Bool
+    @Published var hardwareFailSafeEnabled: Bool
+    @Published var soundWarningsEnabled: Bool
+
+    static let shared: Settings = {
+        let loaded = Settings.load()
+        return loaded
+    }()
 
     static let `default` = Settings(
         timeoutSeconds: 600,
@@ -13,12 +20,47 @@ struct Settings: Codable {
         soundWarningsEnabled: true
     )
 
-    static let savedPath: URL = {
+    private static let savedPath: URL = {
         let fm = FileManager.default
         return fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
             .appendingPathComponent("com.scientist.CleanKeys")
             .appendingPathComponent("settings.json")
     }()
+
+    private enum CodingKeys: String, CodingKey {
+        case timeoutSeconds
+        case overlayPinned
+        case hardwareFailSafeEnabled
+        case soundWarningsEnabled
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        timeoutSeconds = try container.decode(Int.self, forKey: .timeoutSeconds)
+        overlayPinned = try container.decode(Bool.self, forKey: .overlayPinned)
+        hardwareFailSafeEnabled = try container.decode(Bool.self, forKey: .hardwareFailSafeEnabled)
+        soundWarningsEnabled = try container.decode(Bool.self, forKey: .soundWarningsEnabled)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(timeoutSeconds, forKey: .timeoutSeconds)
+        try container.encode(overlayPinned, forKey: .overlayPinned)
+        try container.encode(hardwareFailSafeEnabled, forKey: .hardwareFailSafeEnabled)
+        try container.encode(soundWarningsEnabled, forKey: .soundWarningsEnabled)
+    }
+
+    init(
+        timeoutSeconds: Int,
+        overlayPinned: Bool,
+        hardwareFailSafeEnabled: Bool,
+        soundWarningsEnabled: Bool
+    ) {
+        self.timeoutSeconds = timeoutSeconds
+        self.overlayPinned = overlayPinned
+        self.hardwareFailSafeEnabled = hardwareFailSafeEnabled
+        self.soundWarningsEnabled = soundWarningsEnabled
+    }
 
     static func load() -> Settings {
         do {

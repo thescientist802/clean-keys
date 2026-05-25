@@ -88,8 +88,7 @@ class FailSafeManager: ObservableObject {
 
         switch newState {
         case .cleaning:
-            let settings = Settings.load()
-            startCountdown(timeoutSeconds: settings.timeoutSeconds)
+            startCountdown(timeoutSeconds: Settings.shared.timeoutSeconds)
         case .exiting, .normal:
             cancel()
         default:

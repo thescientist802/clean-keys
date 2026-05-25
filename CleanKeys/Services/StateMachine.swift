@@ -43,7 +43,7 @@ class StateMachine: ObservableObject {
         }
     }
 
-    private func persistState() {
+    func persistState() {
         let persisted = PersistedState(state: state)
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
