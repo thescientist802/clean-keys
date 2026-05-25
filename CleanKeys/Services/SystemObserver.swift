@@ -18,21 +18,21 @@ class SystemObserver {
         notificationCenter.addObserver(
             self,
             selector: #selector(handleScreenSleep),
-            name: NSWorkspace.didSleepNotification,
+            name: NSWorkspace.screensDidSleepNotification,
             object: nil
         )
 
         notificationCenter.addObserver(
             self,
             selector: #selector(handleScreenWake),
-            name: NSWorkspace.didWakeNotification,
+            name: NSWorkspace.screensDidWakeNotification,
             object: nil
         )
 
         notificationCenter.addObserver(
             self,
-            selector: #selector(handleSessionDidEnd),
-            name: NSWorkspace.sessionDidEndNotification,
+            selector: #selector(handleSessionDidResignActive),
+            name: NSWorkspace.sessionDidResignActiveNotification,
             object: nil
         )
     }
@@ -47,7 +47,7 @@ class SystemObserver {
         }
     }
 
-    @objc private func handleSessionDidEnd() {
+    @objc private func handleSessionDidResignActive() {
         if stateMachine.state == .cleaning {
             eventTapService.reinstall()
         }
