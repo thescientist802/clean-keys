@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.scientist.CleanKeys.watchdog</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/swift</string>
+        <string>/Applications/CleanKeys.app/Contents/Resources/WatchdogAgent.swift</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/tmp/com.scientist.CleanKeys.watchdog.stdout</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/com.scientist.CleanKeys.watchdog.stderr</string>
+</dict>
+</plist>
