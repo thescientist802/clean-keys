@@ -70,6 +70,7 @@ class EventTapService {
         }
     }
 
+    @discardableResult
     func isFailSafeDetected(event: CGEvent) -> Bool {
         let keyCode = event.keyCode
         let now = Date()
@@ -131,11 +132,11 @@ private func eventTapCallback(
     type: CGEventType,
     event: CGEvent,
     userInfo: UnsafeMutableRawPointer
-) -> UnsafeMutableRawPointer? {
+) -> Unmanaged<CGEvent>? {
 
     let service = Unmanaged<EventTapService>.fromOpaque(UnsafeRawPointer(userInfo)).takeUnretainedValue()
 
-    guard type == .keyDown || type == .keyUp else { return UnsafeMutableRawPointer(event) }
+    guard type == .keyDown || type == .keyUp else { return Unmanaged.passUnretained(event) }
 
     if service.stateMachine.state == .cleaning {
         if service.isFailSafeDetected(event: event) {
@@ -145,7 +146,7 @@ private func eventTapCallback(
         return nil
     }
 
-    return UnsafeMutableRawPointer(event)
+    return Unmanaged.passUnretained(event)
 }
 
 // MARK: - CGEventMask Extension

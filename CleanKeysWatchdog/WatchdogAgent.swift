@@ -60,3 +60,12 @@ class WatchdogAgent {
         try? FileManager.default.removeItem(atPath: heartbeatPath)
     }
 }
+
+@main
+struct WatchdogMain {
+    static func main() {
+        let agent = WatchdogAgent()
+        agent.startMonitoring()
+        RunLoop.main.run()
+    }
+}

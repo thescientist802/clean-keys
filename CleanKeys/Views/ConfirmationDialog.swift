@@ -31,7 +31,7 @@ class DialogWindowController {
         panel.backgroundColor = NSColor.windowBackgroundColor
         panel.isOpaque = false
 
-        let screen = NSScreen.main!
+        guard let screen = NSScreen.main else { return }
         let panelFrame = panel.frame
         panel.setFrameOrigin(NSPoint(
             x: screen.frame.midX - panelFrame.width / 2,

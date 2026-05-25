@@ -31,7 +31,7 @@ class OverlayWindowController: ObservableObject {
         panel.hasShadow = true
         panel.title = "Cleaning Mode"
 
-        let screen = NSScreen.main!
+        guard let screen = NSScreen.main else { return }
         let panelFrame = panel.frame
         panel.setFrameOrigin(NSPoint(
             x: screen.frame.maxX - panelFrame.width - 20,

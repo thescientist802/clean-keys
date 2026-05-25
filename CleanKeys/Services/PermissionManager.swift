@@ -9,7 +9,7 @@ class PermissionManager {
     }
 
     var isInputMonitoringGranted: Bool {
-        AXIsProcessTrusted()
+        checkInputMonitoringPermission()
     }
 
     func requestAllPermissions(completion: @escaping (Bool) -> Void) {
@@ -24,6 +24,15 @@ class PermissionManager {
             kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true
         ]
         AXIsProcessTrustedWithOptions(options as CFDictionary)
+        return AXIsProcessTrusted()
+    }
+
+    private func checkInputMonitoringPermission() -> Bool {
+        #if swift(>=5.7)
+        if #available(macOS 12.3, *) {
+            return CGEvent.tapEnabled(tap: .cSessionEventTap, place: .headInsertEventTap, options: .defaultTap)
+        }
+        #endif
         return AXIsProcessTrusted()
     }
 

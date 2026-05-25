@@ -7,7 +7,9 @@ class StateMachine: ObservableObject {
 
     private let persistencePath: URL = {
         let fm = FileManager.default
-        return fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        let basePath = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? fm.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return basePath
             .appendingPathComponent("com.scientist.CleanKeys")
             .appendingPathComponent("state.json")
     }()

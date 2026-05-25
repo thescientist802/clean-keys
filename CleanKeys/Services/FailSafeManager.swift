@@ -1,5 +1,4 @@
 import Foundation
-import AVFoundation
 import Combine
 
 class FailSafeManager: ObservableObject {
@@ -62,13 +61,8 @@ class FailSafeManager: ObservableObject {
     }
 
     private func playWarningSound() {
-        if let soundURL = Bundle.main.url(forResource: "Glass", withExtension: "aiff", subdirectory: "System/Library/Sounds") {
-            do {
-                let player = try AVAudioPlayer(contentsOf: soundURL)
-                player.play()
-            } catch {
-                NSSound.beep()
-            }
+        if NSSound.availableSounds.contains("Glass") {
+            NSSound(named: "Glass")?.play()
         } else {
             NSSound.beep()
         }
