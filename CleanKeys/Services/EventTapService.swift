@@ -4,7 +4,7 @@ import Carbon
 
 class EventTapService {
 
-    private let stateMachine: StateMachine
+    fileprivate let stateMachine: StateMachine
     private var tap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
     private var isRunning = false
@@ -28,7 +28,7 @@ class EventTapService {
             options: .defaultTap,
             eventsOfInterest: eventMask,
             callback: eventTapCallback,
-            userInfo: UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
+            userInfo: UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         ) else {
             print("Failed to create event tap")
             return
@@ -134,7 +134,7 @@ private func eventTapCallback(
     userInfo: UnsafeMutableRawPointer
 ) -> Unmanaged<CGEvent>? {
 
-    let service = Unmanaged<EventTapService>.fromOpaque(UnsafeRawPointer(userInfo)).takeRetainedValue()
+    let service = Unmanaged<EventTapService>.fromOpaque(UnsafeRawPointer(userInfo)).takeUnretainedValue()
 
     guard type == .keyDown || type == .keyUp else { return Unmanaged.passUnretained(event) }
 
