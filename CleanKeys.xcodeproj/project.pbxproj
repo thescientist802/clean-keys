@@ -7,28 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1001001 /* CleanKeysApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001001; };
-		A1001002 /* AppLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001002; };
-		A1001003 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001003; };
-		A1001004 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001004; };
-		A1001005 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001005; };
-		A1001006 /* EventTapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001006; };
-		A1001007 /* FailSafeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001007; };
-		A1001008 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001008; };
-		A1001009 /* SystemObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001009; };
-		A1001010 /* WatchdogHeartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001010; };
-		A1001011 /* MenuBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001011; };
-		A1001012 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001012; };
-		A1001013 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001013; };
-		A1001014 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001014; };
-		A1001015 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2001015; };
-		A1001016 /* CleanKeys.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = A2001016; };
-		A1001017 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2001017; };
-		A1001020 /* StateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001020; };
-		A1001021 /* FailSafeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001021; };
-		A1001022 /* EventTapCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001022; };
-		A1001030 /* WatchdogAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001030; };
+		A1001001 /* CleanKeysApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001001 /* CleanKeysApp.swift */; };
+		A1001002 /* AppLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001002 /* AppLifecycle.swift */; };
+		A1001003 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001003 /* AppState.swift */; };
+		A1001004 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001004 /* Settings.swift */; };
+		A1001005 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001005 /* StateMachine.swift */; };
+		A1001006 /* EventTapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001006 /* EventTapService.swift */; };
+		A1001007 /* FailSafeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001007 /* FailSafeManager.swift */; };
+		A1001008 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001008 /* PermissionManager.swift */; };
+		A1001009 /* SystemObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001009 /* SystemObserver.swift */; };
+		A1001010 /* WatchdogHeartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001010 /* WatchdogHeartbeat.swift */; };
+		A1001011 /* MenuBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001011 /* MenuBarViewModel.swift */; };
+		A1001012 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001012 /* MenuBarView.swift */; };
+		A1001013 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001013 /* OverlayWindow.swift */; };
+		A1001014 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001014 /* ConfirmationDialog.swift */; };
+		A1001017 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2001017 /* PrivacyInfo.xcprivacy */; };
+		A1001020 /* StateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001020 /* StateMachineTests.swift */; };
+		A1001021 /* FailSafeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001021 /* FailSafeTests.swift */; };
+		A1001022 /* EventTapCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001022 /* EventTapCallbackTests.swift */; };
+		A1001030 /* WatchdogAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001030 /* WatchdogAgent.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A6002010 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A6003000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A6001001;
+			remoteInfo = CleanKeys;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		A2001001 /* CleanKeysApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanKeysApp.swift; sourceTree = "<group>"; };
@@ -54,7 +62,7 @@
 		A2001030 /* WatchdogAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogAgent.swift; sourceTree = "<group>"; };
 		A3001001 /* CleanKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3001002 /* CleanKeysTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleanKeysTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A3001003 /* CleanKeysWatchdog */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.exec"; includeInIndex = 0; path = CleanKeysWatchdog; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3001003 /* CleanKeysWatchdog */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CleanKeysWatchdog; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +106,8 @@
 		A5001010 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				A2001001,
-				A2001002,
+				A2001001 /* CleanKeysApp.swift */,
+				A2001002 /* AppLifecycle.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -107,8 +115,8 @@
 		A5001020 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A2001003,
-				A2001004,
+				A2001003 /* AppState.swift */,
+				A2001004 /* Settings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -116,12 +124,12 @@
 		A5001030 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A2001005,
-				A2001006,
-				A2001007,
-				A2001008,
-				A2001009,
-				A2001010,
+				A2001005 /* StateMachine.swift */,
+				A2001006 /* EventTapService.swift */,
+				A2001007 /* FailSafeManager.swift */,
+				A2001008 /* PermissionManager.swift */,
+				A2001009 /* SystemObserver.swift */,
+				A2001010 /* WatchdogHeartbeat.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -129,7 +137,7 @@
 		A5001040 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				A2001011,
+				A2001011 /* MenuBarViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -137,9 +145,9 @@
 		A5001050 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A2001012,
-				A2001013,
-				A2001014,
+				A2001012 /* MenuBarView.swift */,
+				A2001013 /* OverlayWindow.swift */,
+				A2001014 /* ConfirmationDialog.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -147,9 +155,9 @@
 		A5001060 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A2001015,
-				A2001016,
-				A2001017,
+				A2001015 /* Info.plist */,
+				A2001016 /* CleanKeys.entitlements */,
+				A2001017 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -157,9 +165,9 @@
 		A5001070 /* CleanKeysTests */ = {
 			isa = PBXGroup;
 			children = (
-				A2001020,
-				A2001021,
-				A2001022,
+				A2001020 /* StateMachineTests.swift */,
+				A2001021 /* FailSafeTests.swift */,
+				A2001022 /* EventTapCallbackTests.swift */,
 			);
 			path = CleanKeysTests;
 			sourceTree = "<group>";
@@ -167,7 +175,7 @@
 		A5001080 /* CleanKeysWatchdog */ = {
 			isa = PBXGroup;
 			children = (
-				A2001030,
+				A2001030 /* WatchdogAgent.swift */,
 			);
 			path = CleanKeysWatchdog;
 			sourceTree = "<group>";
@@ -175,9 +183,9 @@
 		A5001100 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A3001001,
-				A3001002,
-				A3001003,
+				A3001001 /* CleanKeys.app */,
+				A3001002 /* CleanKeysTests.xctest */,
+				A3001003 /* CleanKeysWatchdog */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -185,24 +193,23 @@
 		A5002000 = {
 			isa = PBXGroup;
 			children = (
-				A5001000,
-				A5001070,
-				A5001080,
-				A5001100,
+				A5001000 /* CleanKeys */,
+				A5001070 /* CleanKeysTests */,
+				A5001080 /* CleanKeysWatchdog */,
+				A5001100 /* Products */,
 			);
 			sourceTree = "<group>";
-			location = 9;
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
 		A6001001 /* CleanKeys */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A7001001;
+			buildConfigurationList = A7001001 /* Build configuration list for PBXNativeTarget "CleanKeys" */;
 			buildPhases = (
-				A8001001,
-				A4001001,
-				A9001001,
+				A8001001 /* Sources */,
+				A4001001 /* Frameworks */,
+				A9001001 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -210,34 +217,34 @@
 			);
 			name = CleanKeys;
 			productName = CleanKeys;
-			productReference = A3001001;
+			productReference = A3001001 /* CleanKeys.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A6001002 /* CleanKeysTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A7001002;
+			buildConfigurationList = A7001002 /* Build configuration list for PBXNativeTarget "CleanKeysTests" */;
 			buildPhases = (
-				A8001002,
-				A4001002,
-				A9001002,
+				A8001002 /* Sources */,
+				A4001002 /* Frameworks */,
+				A9001002 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A6002001 /* CleanKeys */,
+				A6002001 /* PBXTargetDependency */,
 			);
 			name = CleanKeysTests;
 			productName = CleanKeysTests;
-			productReference = A3001002;
+			productReference = A3001002 /* CleanKeysTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		A6001003 /* CleanKeysWatchdog */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A7001003;
+			buildConfigurationList = A7001003 /* Build configuration list for PBXNativeTarget "CleanKeysWatchdog" */;
 			buildPhases = (
-				A8001003,
-				A4001003,
-				A9001003,
+				A8001003 /* Sources */,
+				A4001003 /* Frameworks */,
+				A9001003 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -245,28 +252,10 @@
 			);
 			name = CleanKeysWatchdog;
 			productName = CleanKeysWatchdog;
-			productReference = A3001003;
+			productReference = A3001003 /* CleanKeysWatchdog */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
-
-/* Begin PBXTargetDependency section */
-		A6002001 /* CleanKeys */ = {
-			isa = PBXTargetDependency;
-			target = A6001001;
-			targetProxy = A6002010;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin PBXContainerItemProxy section */
-		A6002010 = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A6003000;
-			proxyType = 1;
-			remoteGlobalIDString = A6001001;
-			remoteInfo = CleanKeys;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXProject section */
 		A6003000 /* Project object */ = {
@@ -274,7 +263,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					A6001001 = {
 						CreatedOnToolsVersion = 15.0;
@@ -288,7 +277,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A7003000;
+			buildConfigurationList = A7003000 /* Build configuration list for PBXProject "CleanKeys" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -297,13 +286,13 @@
 				Base,
 			);
 			mainGroup = A5002000;
-			productRefGroup = A5001100;
+			productRefGroup = A5001100 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A6001001,
-				A6001002,
-				A6001003,
+				A6001001 /* CleanKeys */,
+				A6001002 /* CleanKeysTests */,
+				A6001003 /* CleanKeysWatchdog */,
 			);
 		};
 /* End PBXProject section */
@@ -313,9 +302,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1001015,
-				A1001016,
-				A1001017,
+				A1001017 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,20 +327,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1001001,
-				A1001002,
-				A1001003,
-				A1001004,
-				A1001005,
-				A1001006,
-				A1001007,
-				A1001008,
-				A1001009,
-				A1001010,
-				A1001011,
-				A1001012,
-				A1001013,
-				A1001014,
+				A1001001 /* CleanKeysApp.swift in Sources */,
+				A1001002 /* AppLifecycle.swift in Sources */,
+				A1001003 /* AppState.swift in Sources */,
+				A1001004 /* Settings.swift in Sources */,
+				A1001005 /* StateMachine.swift in Sources */,
+				A1001006 /* EventTapService.swift in Sources */,
+				A1001007 /* FailSafeManager.swift in Sources */,
+				A1001008 /* PermissionManager.swift in Sources */,
+				A1001009 /* SystemObserver.swift in Sources */,
+				A1001010 /* WatchdogHeartbeat.swift in Sources */,
+				A1001011 /* MenuBarViewModel.swift in Sources */,
+				A1001012 /* MenuBarView.swift in Sources */,
+				A1001013 /* OverlayWindow.swift in Sources */,
+				A1001014 /* ConfirmationDialog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,9 +348,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1001020,
-				A1001021,
-				A1001022,
+				A1001020 /* StateMachineTests.swift in Sources */,
+				A1001021 /* FailSafeTests.swift in Sources */,
+				A1001022 /* EventTapCallbackTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,34 +358,43 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1001030,
+				A1001030 /* WatchdogAgent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A6002001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A6001001 /* CleanKeys */;
+			targetProxy = A6002010 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A7001010 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = CleanKeys.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CleanKeys/Resources/CleanKeys.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CleanKeys/Resources/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				INFOPLIST_KEY_NSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -410,23 +406,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = CleanKeys.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CleanKeys/Resources/CleanKeys.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CleanKeys/Resources/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				INFOPLIST_KEY_NSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -440,11 +437,11 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CleanKeys.app/Contents/MacOS/CleanKeys";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
-				MARKETING_VERSION = 1.0.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -458,11 +455,11 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CleanKeys.app/Contents/MacOS/CleanKeys";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
-				MARKETING_VERSION = 1.0.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -475,10 +472,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
-				MARKETING_VERSION = 1.0.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys.watchdog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -491,10 +489,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright 2026. All rights reserved.";
-				MARKETING_VERSION = 1.0.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scientist.CleanKeys.watchdog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -536,6 +535,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -559,6 +559,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -598,6 +599,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -614,6 +616,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -621,44 +624,43 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A7001001 = {
+		A7001001 /* Build configuration list for PBXNativeTarget "CleanKeys" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A7001010,
-				A7001011,
+				A7001010 /* Debug */,
+				A7001011 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A7001002 = {
+		A7001002 /* Build configuration list for PBXNativeTarget "CleanKeysTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A7001020,
-				A7001021,
+				A7001020 /* Debug */,
+				A7001021 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A7001003 = {
+		A7001003 /* Build configuration list for PBXNativeTarget "CleanKeysWatchdog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A7001030,
-				A7001031,
+				A7001030 /* Debug */,
+				A7001031 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A7003000 = {
+		A7003000 /* Build configuration list for PBXProject "CleanKeys" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A7003010,
-				A7003011,
+				A7003010 /* Debug */,
+				A7003011 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
-	rootObject = A6003000;
+	rootObject = A6003000 /* Project object */;
 }

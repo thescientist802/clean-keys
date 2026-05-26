@@ -56,10 +56,14 @@ struct ConfirmationDialogView: View {
     }
 
     private var iconSection: some View {
-        Image(systemName: viewModel.mode.iconName)
-            .font(.system(size: 48))
-            .foregroundColor(viewModel.mode.iconColor)
-            .symbolEffect(.pulse)
+        if #available(macOS 14.0, *) {
+            Image(systemName: viewModel.mode.iconName)
+                .font(.system(size: 48))
+                .foregroundColor(viewModel.mode.iconColor)
+                .symbolEffect(.pulse)
+        } else {
+            // Fallback on earlier versions
+        }
     }
 
     private var messageSection: some View {
