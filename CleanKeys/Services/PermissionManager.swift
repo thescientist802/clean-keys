@@ -21,19 +21,17 @@ class PermissionManager {
         if AXIsProcessTrusted() { return true }
 
         let options: [String: Any] = [
-            kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true
+            kAXTrustedCheckOptionPrompt as String: true
         ]
         AXIsProcessTrustedWithOptions(options as CFDictionary)
         return AXIsProcessTrusted()
     }
 
     private func checkInputMonitoringPermission() -> Bool {
-        #if swift(>=5.7)
-        if #available(macOS 12.3, *) {
-            return CGEvent.tapEnabled(tap: .cSessionEventTap, place: .headInsertEventTap, options: .defaultTap)
+        if #available(macOS 10.15, *) {
+            return CGPreflightListenEventAccess()
         }
-        #endif
-        return AXIsProcessTrusted()
+        return true
     }
 
     func openAccessibilitySettings() {
