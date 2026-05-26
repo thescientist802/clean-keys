@@ -68,8 +68,8 @@ class FailSafeManager: ObservableObject {
 
     private func playWarningSound() {
         guard Settings.shared.soundWarningsEnabled else { return }
-        if NSSound.availableSounds.contains("Glass") {
-            NSSound(named: "Glass")?.play()
+        if let sound = NSSound(named: "Glass") {
+            sound.play()
         } else {
             NSSound.beep()
         }
