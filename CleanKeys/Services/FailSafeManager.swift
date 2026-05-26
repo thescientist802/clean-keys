@@ -61,6 +61,7 @@ class FailSafeManager: ObservableObject {
     }
 
     private func playWarningSound() {
+        guard Settings.shared.soundWarningsEnabled else { return }
         if NSSound.availableSounds.contains("Glass") {
             NSSound(named: "Glass")?.play()
         } else {

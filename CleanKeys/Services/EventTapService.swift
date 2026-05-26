@@ -28,7 +28,7 @@ class EventTapService {
             options: .defaultTap,
             eventsOfInterest: eventMask,
             callback: eventTapCallback,
-            userInfo: UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
+            userInfo: UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
         ) else {
             print("Failed to create event tap")
             return
@@ -134,7 +134,7 @@ private func eventTapCallback(
     userInfo: UnsafeMutableRawPointer
 ) -> Unmanaged<CGEvent>? {
 
-    let service = Unmanaged<EventTapService>.fromOpaque(UnsafeRawPointer(userInfo)).takeUnretainedValue()
+    let service = Unmanaged<EventTapService>.fromOpaque(UnsafeRawPointer(userInfo)).takeRetainedValue()
 
     guard type == .keyDown || type == .keyUp else { return Unmanaged.passUnretained(event) }
 

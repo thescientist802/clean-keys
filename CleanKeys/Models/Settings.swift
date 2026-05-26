@@ -23,7 +23,8 @@ class Settings: ObservableObject, Codable {
     static let savedPath: URL = {
         let fm = FileManager.default
         let basePath = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
-            ?? fm.urls(for: .documentDirectory, in: .userDomainMask).first!
+            ?? fm.urls(for: .documentDirectory, in: .userDomainMask).first
+            ?? URL(fileURLWithPath: "/tmp")
         return basePath
             .appendingPathComponent("com.scientist.CleanKeys")
             .appendingPathComponent("settings.json")

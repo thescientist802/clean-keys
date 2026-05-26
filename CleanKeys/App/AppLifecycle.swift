@@ -117,6 +117,7 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
     private func restoreState() {
         let restored = stateMachine.restorePersistedState()
         if restored && stateMachine.state == .cleaning {
+            stateMachine.transition(to: .exiting)
             stateMachine.transition(to: .normal)
             showAlert(
                 title: "CleanKeys Recovered",

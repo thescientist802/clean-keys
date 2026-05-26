@@ -8,7 +8,8 @@ class StateMachine: ObservableObject {
     private let persistencePath: URL = {
         let fm = FileManager.default
         let basePath = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
-            ?? fm.urls(for: .documentDirectory, in: .userDomainMask).first!
+            ?? fm.urls(for: .documentDirectory, in: .userDomainMask).first
+            ?? URL(fileURLWithPath: "/tmp")
         return basePath
             .appendingPathComponent("com.scientist.CleanKeys")
             .appendingPathComponent("state.json")
@@ -51,6 +52,10 @@ class StateMachine: ObservableObject {
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         do {
             let data = try encoder.encode(persisted)
+            try FileManager.default.createDirectory(
+                at: persistencePath.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
             try data.write(to: persistencePath, options: .atomic)
         } catch {
             print("Failed to persist state: \(error.localizedDescription)")
