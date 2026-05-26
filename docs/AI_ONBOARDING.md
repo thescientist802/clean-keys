@@ -23,3 +23,7 @@ CleanKeys is a macOS menu-bar utility that enters a "cleaning" mode, blocks keyb
 - Swift
 - SwiftUI/AppKit
 - Xcode project (not SwiftPM)
+
+
+## AI Handoff Protocol
+- Follow `docs/AI_DOC_CHAIN_INSTRUCTIONS.md` at the end of each AI session to keep docs synchronized.
