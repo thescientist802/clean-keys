@@ -76,15 +76,16 @@ class Settings: ObservableObject, Codable {
     }
 
     func save() throws {
-        if !FileManager.default.fileExists(atPath: savedPath.deletingLastPathComponent().path) {
+        let directory = Settings.savedPath.deletingLastPathComponent()
+        if !FileManager.default.fileExists(atPath: directory.path) {
             try FileManager.default.createDirectory(
-                at: savedPath.deletingLastPathComponent(),
+                at: directory,
                 withIntermediateDirectories: true
             )
         }
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let data = try encoder.encode(self)
-        try data.write(to: savedPath, options: .atomic)
+        try data.write(to: Settings.savedPath, options: .atomic)
     }
 }
