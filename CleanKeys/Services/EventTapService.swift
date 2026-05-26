@@ -35,10 +35,10 @@ class EventTapService {
         }
 
         tap = eventTap
-        runLoopSource = CFMachPort.createRunLoopSource(eventTap, 0)
+        runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0)
 
         if let source = runLoopSource {
-            CFRunLoop.addSource(CFRunLoopGetCurrent(), source, .commonModes)
+            CFRunLoopAddSource(CFRunLoopGetCurrent(), source, CFRunLoopMode.commonModes)
         }
 
         CGEvent.tapEnable(tap: eventTap, enable: true)
@@ -53,7 +53,7 @@ class EventTapService {
         }
 
         if let source = runLoopSource {
-            CFRunLoop.removeSource(CFRunLoopGetCurrent(), source, .commonModes)
+            CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, CFRunLoopMode.commonModes)
         }
 
         tap = nil
@@ -72,7 +72,7 @@ class EventTapService {
 
     @discardableResult
     func isFailSafeDetected(event: CGEvent) -> Bool {
-        let keyCode = event.keyCode
+        let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
         let now = Date()
 
         if event.type == .keyDown {
@@ -83,9 +83,9 @@ class EventTapService {
             lastKeyDownTimes.removeValue(forKey: keyCode)
         }
 
-        let escapeKey: CGKeyCode = kVK_Escape
-        let ctrlKey: CGKeyCode = kVK_Control
-        let shiftKey: CGKeyCode = kVK_Shift
+        let escapeKey = CGKeyCode(kVK_Escape)
+        let ctrlKey = CGKeyCode(kVK_Control)
+        let shiftKey = CGKeyCode(kVK_Shift)
 
         let hasEscape = activeKeyCodes.contains(escapeKey) &&
             (now.timeIntervalSince(lastKeyDownTimes[escapeKey] ?? Date.distantPast) <= patternDetectionWindow)
