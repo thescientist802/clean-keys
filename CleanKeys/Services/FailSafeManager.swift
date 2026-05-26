@@ -19,6 +19,10 @@ class FailSafeManager: ObservableObject {
 
     func startCountdown(timeoutSeconds: Int) {
         cancel()
+        guard timeoutSeconds > 0 else {
+            stateMachine.transition(to: .exiting)
+            return
+        }
         remainingSeconds = timeoutSeconds
         warningsFired = []
 
@@ -45,7 +49,8 @@ class FailSafeManager: ObservableObject {
     }
 
     func extend(by seconds: Int) {
-        remainingSeconds += seconds
+        guard timer != nil else { return }
+        remainingSeconds = max(0, remainingSeconds + seconds)
         updateCountdownText()
     }
 
