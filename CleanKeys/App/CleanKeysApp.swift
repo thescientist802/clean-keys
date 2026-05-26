@@ -3,7 +3,7 @@ import Foundation
 
 @main
 struct CleanKeysApp: App {
-    @NSApplicationDelegateAdaptor(AppLifecycle.shared) private var appLifecycle
+    @NSApplicationDelegateAdaptor(AppLifecycle.self) private var appLifecycle
     @StateObject private var viewModel: MenuBarViewModel
 
     init() {

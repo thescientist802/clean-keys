@@ -35,7 +35,7 @@ struct MenuBarView: View {
                     Image(systemName: "timer")
                         .foregroundColor(.orange)
                     Text(viewModel.countdownText)
-                        .font(.monospacedDigit)
+                        .font(.body.monospacedDigit())
                         .fontWeight(.semibold)
                     Spacer()
                     Button("Extend +5m") {

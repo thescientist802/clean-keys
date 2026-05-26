@@ -6,6 +6,12 @@ class DialogWindowController {
     static let shared = DialogWindowController()
 
     private var panel: NSPanel?
+    
+    func dismiss() {
+        panel?.orderOut(nil)
+        
+        panel = nil
+    }
 
     func showConfirmation(mode: DialogMode, onConfirm: @escaping () -> Void) {
         panel?.orderOut(nil)
@@ -56,13 +62,17 @@ struct ConfirmationDialogView: View {
     }
 
     private var iconSection: some View {
-        if #available(macOS 14.0, *) {
-            Image(systemName: viewModel.mode.iconName)
-                .font(.system(size: 48))
-                .foregroundColor(viewModel.mode.iconColor)
-                .symbolEffect(.pulse)
-        } else {
-            // Fallback on earlier versions
+        Group {
+            if #available(macOS 14.0, *) {
+                Image(systemName: viewModel.mode.iconName)
+                    .font(.system(size: 48))
+                    .foregroundColor(viewModel.mode.iconColor)
+                    .symbolEffect(.pulse)
+            } else {
+                Image(systemName: viewModel.mode.iconName)
+                                .font(.system(size: 48))
+                                .foregroundColor(viewModel.mode.iconColor)
+            }
         }
     }
 
@@ -81,13 +91,13 @@ struct ConfirmationDialogView: View {
     private var buttonSection: some View {
         HStack(spacing: 12) {
             Button("Cancel") {
-                DialogWindowController.shared.panel?.orderOut(nil)
+                DialogWindowController.shared.dismiss()
             }
             .buttonStyle(.bordered)
 
             Button(viewModel.mode.confirmTitle) {
                 viewModel.onConfirm()
-                DialogWindowController.shared.panel?.orderOut(nil)
+                DialogWindowController.shared.dismiss()
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
