@@ -5,7 +5,7 @@ class MenuBarViewModel: ObservableObject {
 
     @Published var state: AppState = .normal
     @Published var countdownText: String = ""
-    @Published var isOverlayPinned: Bool = false
+    @Published var isOverlayPinned: Bool = Settings.shared.overlayPinned
 
     private let stateMachine: StateMachine
     private let failSafeManager: FailSafeManager

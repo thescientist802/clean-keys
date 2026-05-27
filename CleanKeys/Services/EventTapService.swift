@@ -21,7 +21,10 @@ class EventTapService {
     func start() {
         guard !isRunning else { return }
 
-        let eventMask = CGEventMask(eventTypes: [.keyDown, .keyUp])
+        activeKeyCodes.removeAll()
+        lastKeyDownTimes.removeAll()
+
+        let eventMask = CGEventMask(eventTypes: [.keyDown, .keyUp, .flagsChanged])
         guard let eventTap = CGEvent.tapCreate(
             tap: .cSessionEventTap,
             place: .headInsertEventTap,
@@ -75,17 +78,33 @@ class EventTapService {
         let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
         let now = Date()
 
+        let escapeKey = CGKeyCode(kVK_Escape)
+        let ctrlKey = CGKeyCode(kVK_Control)
+        let shiftKey = CGKeyCode(kVK_Shift)
+
         if event.type == .keyDown {
             activeKeyCodes.insert(keyCode)
             lastKeyDownTimes[keyCode] = now
         } else if event.type == .keyUp {
             activeKeyCodes.remove(keyCode)
             lastKeyDownTimes.removeValue(forKey: keyCode)
-        }
+        } else if event.type == .flagsChanged {
+            if event.flags.contains(.maskControl) {
+                activeKeyCodes.insert(ctrlKey)
+                lastKeyDownTimes[ctrlKey] = now
+            } else {
+                activeKeyCodes.remove(ctrlKey)
+                lastKeyDownTimes.removeValue(forKey: ctrlKey)
+            }
 
-        let escapeKey = CGKeyCode(kVK_Escape)
-        let ctrlKey = CGKeyCode(kVK_Control)
-        let shiftKey = CGKeyCode(kVK_Shift)
+            if event.flags.contains(.maskShift) {
+                activeKeyCodes.insert(shiftKey)
+                lastKeyDownTimes[shiftKey] = now
+            } else {
+                activeKeyCodes.remove(shiftKey)
+                lastKeyDownTimes.removeValue(forKey: shiftKey)
+            }
+        }
 
         let hasEscape = activeKeyCodes.contains(escapeKey) &&
             (now.timeIntervalSince(lastKeyDownTimes[escapeKey] ?? Date.distantPast) <= patternDetectionWindow)
@@ -136,10 +155,10 @@ private func eventTapCallback(
 
     let service = Unmanaged<EventTapService>.fromOpaque(UnsafeRawPointer(userInfo)).takeUnretainedValue()
 
-    guard type == .keyDown || type == .keyUp else { return Unmanaged.passUnretained(event) }
+    guard type == .keyDown || type == .keyUp || type == .flagsChanged else { return Unmanaged.passUnretained(event) }
 
     if service.stateMachine.state == .cleaning {
-        if service.isFailSafeDetected(event: event) {
+        if Settings.shared.hardwareFailSafeEnabled, service.isFailSafeDetected(event: event) {
             service.stateMachine.transition(to: .exiting)
             return nil
         }
