@@ -12,6 +12,7 @@ CleanKeys is a macOS menu-bar utility that enters a "cleaning" mode, blocks keyb
 
 ## Run / Build
 - Primary build system: Xcode project `CleanKeys.xcodeproj`.
+- Shared scheme: `CleanKeys.xcodeproj/xcshareddata/xcschemes/CleanKeys.xcscheme` (includes `CleanKeysTests`).
 - Build command (macOS/Xcode required): `xcodebuild -project CleanKeys.xcodeproj -scheme CleanKeys build`.
 - Tests (macOS/Xcode required): `xcodebuild -project CleanKeys.xcodeproj -scheme CleanKeys -destination 'platform=macOS' test`.
 

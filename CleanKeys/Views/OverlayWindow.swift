@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import Combine
 
 class OverlayWindowController: ObservableObject {
 
@@ -7,10 +8,11 @@ class OverlayWindowController: ObservableObject {
     private var autoHideTimer: Timer?
     @Published var isPinned: Bool = false
 
-    func show(countdownText: String, onPinToggle: @escaping () -> Void) {
+    func show(failSafeManager: FailSafeManager, pinned: Bool, onPinToggle: @escaping () -> Void) {
         dismiss()
 
-        let overlayViewModel = OverlayViewModel(countdownText: countdownText, onPinToggle: onPinToggle)
+        isPinned = pinned
+        let overlayViewModel = OverlayViewModel(failSafeManager: failSafeManager, onPinToggle: onPinToggle)
         let contentView = OverlayView(viewModel: overlayViewModel)
             .frame(minWidth: 320, maxWidth: .infinity, minHeight: 180, maxHeight: .infinity)
 
@@ -155,8 +157,17 @@ class OverlayViewModel: ObservableObject {
     @Published var countdownText: String
     let onPinToggle: () -> Void
 
-    init(countdownText: String, onPinToggle: @escaping () -> Void) {
-        self.countdownText = countdownText
+    private var cancellables = Set<AnyCancellable>()
+
+    init(failSafeManager: FailSafeManager, onPinToggle: @escaping () -> Void) {
+        self.countdownText = failSafeManager.countdownText
         self.onPinToggle = onPinToggle
+
+        failSafeManager.$countdownText
+            .receive(on: RunLoop.main)
+            .sink { [weak self] text in
+                self?.countdownText = text
+            }
+            .store(in: &cancellables)
     }
 }

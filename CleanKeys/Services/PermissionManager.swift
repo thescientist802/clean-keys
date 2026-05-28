@@ -21,7 +21,7 @@ class PermissionManager {
         if AXIsProcessTrusted() { return true }
 
         let options: [String: Any] = [
-            kAXTrustedCheckOptionPrompt as String: true
+            kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true
         ]
         AXIsProcessTrustedWithOptions(options as CFDictionary)
         return AXIsProcessTrusted()

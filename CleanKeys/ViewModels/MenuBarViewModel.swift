@@ -9,11 +9,17 @@ class MenuBarViewModel: ObservableObject {
 
     private let stateMachine: StateMachine
     private let failSafeManager: FailSafeManager
+    private weak var overlayController: OverlayWindowController?
     private var cancellables = Set<AnyCancellable>()
 
-    init(stateMachine: StateMachine, failSafeManager: FailSafeManager) {
+    init(
+        stateMachine: StateMachine,
+        failSafeManager: FailSafeManager,
+        overlayController: OverlayWindowController
+    ) {
         self.stateMachine = stateMachine
         self.failSafeManager = failSafeManager
+        self.overlayController = overlayController
 
         stateMachine.$state
             .receive(on: RunLoop.main)
@@ -50,5 +56,6 @@ class MenuBarViewModel: ObservableObject {
         isOverlayPinned.toggle()
         Settings.shared.overlayPinned = isOverlayPinned
         try? Settings.shared.save()
+        overlayController?.setPinned(isOverlayPinned)
     }
 }

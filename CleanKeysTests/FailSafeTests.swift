@@ -8,8 +8,18 @@ final class FailSafeTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        clearPersistedState()
         stateMachine = StateMachine()
         failSafeManager = FailSafeManager(stateMachine: stateMachine)
+    }
+
+    private func clearPersistedState() {
+        let fm = FileManager.default
+        guard let basePath = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else { return }
+        let path = basePath
+            .appendingPathComponent("com.scientist.CleanKeys")
+            .appendingPathComponent("state.json")
+        try? fm.removeItem(at: path)
     }
 
     override func tearDown() {
@@ -25,20 +35,23 @@ final class FailSafeTests: XCTestCase {
     }
 
     func testCountdownDecrements() {
-        failSafeManager.startCountdown(timeoutSeconds: 3)
+        stateMachine.transition(to: .cleaning)
 
         let expectation = expectation(description: "Countdown completes")
 
-        NotificationCenter.default.addObserver(
+        let observer = NotificationCenter.default.addObserver(
             forName: .stateMachineDidChange,
-            object: nil,
+            object: stateMachine,
             queue: .main
-        ) { [weak self] notification in
+        ) { notification in
             if let newState = notification.userInfo?["newState"] as? AppState, newState == .exiting {
                 expectation.fulfill()
             }
         }
+        defer { NotificationCenter.default.removeObserver(observer) }
 
+        failSafeManager.cancel()
+        failSafeManager.startCountdown(timeoutSeconds: 3)
         waitForExpectations(timeout: 10)
     }
 
@@ -52,5 +65,17 @@ final class FailSafeTests: XCTestCase {
         failSafeManager.startCountdown(timeoutSeconds: 100)
         failSafeManager.extend(by: 300)
         XCTAssertEqual(failSafeManager.countdownText, "06:40")
+    }
+
+    func testZeroTimeoutTransitionsToExiting() {
+        stateMachine.transition(to: .cleaning)
+        failSafeManager.cancel()
+        failSafeManager.startCountdown(timeoutSeconds: 0)
+        XCTAssertEqual(stateMachine.state, .exiting, "Expected exiting after zero timeout, got \(stateMachine.state)")
+    }
+
+    func testExtendWhenInactiveIsNoOp() {
+        failSafeManager.extend(by: 300)
+        XCTAssertEqual(failSafeManager.countdownText, "")
     }
 }

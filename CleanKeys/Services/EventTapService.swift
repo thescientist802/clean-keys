@@ -26,7 +26,7 @@ class EventTapService {
 
         let eventMask = CGEventMask(eventTypes: [.keyDown, .keyUp, .flagsChanged])
         guard let eventTap = CGEvent.tapCreate(
-            tap: .cSessionEventTap,
+            tap: .cgSessionEventTap,
             place: .headInsertEventTap,
             options: .defaultTap,
             eventsOfInterest: eventMask,
@@ -126,6 +126,7 @@ class EventTapService {
     }
 
     @objc private func handleStateChange(_ notification: Notification) {
+        guard (notification.object as? StateMachine) === stateMachine else { return }
         guard let newState = notification.userInfo?["newState"] as? AppState else { return }
 
         switch newState {
@@ -150,16 +151,19 @@ private func eventTapCallback(
     proxy: CGEventTapProxy,
     type: CGEventType,
     event: CGEvent,
-    userInfo: UnsafeMutableRawPointer
+    userInfo: UnsafeMutableRawPointer?
 ) -> Unmanaged<CGEvent>? {
 
-    let service = Unmanaged<EventTapService>.fromOpaque(UnsafeRawPointer(userInfo)).takeUnretainedValue()
+    guard let userInfo else { return Unmanaged.passUnretained(event) }
+    let service = Unmanaged<EventTapService>.fromOpaque(userInfo).takeUnretainedValue()
 
     guard type == .keyDown || type == .keyUp || type == .flagsChanged else { return Unmanaged.passUnretained(event) }
 
     if service.stateMachine.state == .cleaning {
         if Settings.shared.hardwareFailSafeEnabled, service.isFailSafeDetected(event: event) {
-            service.stateMachine.transition(to: .exiting)
+            DispatchQueue.main.async {
+                service.stateMachine.transition(to: .exiting)
+            }
             return nil
         }
         return nil

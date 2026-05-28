@@ -26,7 +26,7 @@ class FailSafeManager: ObservableObject {
         remainingSeconds = timeoutSeconds
         warningsFired = []
 
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        let countdownTimer = Timer(timeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             self.remainingSeconds -= 1
             self.updateCountdownText()
@@ -37,6 +37,8 @@ class FailSafeManager: ObservableObject {
                 self.stateMachine.transition(to: .exiting)
             }
         }
+        RunLoop.main.add(countdownTimer, forMode: .common)
+        timer = countdownTimer
         updateCountdownText()
     }
 
@@ -85,6 +87,7 @@ class FailSafeManager: ObservableObject {
     }
 
     @objc private func handleStateChange(_ notification: Notification) {
+        guard (notification.object as? StateMachine) === stateMachine else { return }
         guard let newState = notification.userInfo?["newState"] as? AppState else { return }
 
         switch newState {

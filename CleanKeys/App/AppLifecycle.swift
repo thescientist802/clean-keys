@@ -25,7 +25,11 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
         systemObserver = SystemObserver(stateMachine: stateMachine, eventTapService: eventTapService)
         watchdogHeartbeat = WatchdogHeartbeat()
         overlayController = OverlayWindowController()
-        menuBarViewModel = MenuBarViewModel(stateMachine: stateMachine, failSafeManager: failSafeManager)
+        menuBarViewModel = MenuBarViewModel(
+            stateMachine: stateMachine,
+            failSafeManager: failSafeManager,
+            overlayController: overlayController
+        )
 
         super.init()
 
@@ -60,19 +64,29 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
     }
 
     @objc private func handleStateChange(_ notification: Notification) {
+        guard (notification.object as? StateMachine) === stateMachine else { return }
         guard let newState = notification.userInfo?["newState"] as? AppState else { return }
 
         switch newState {
         case .cleaning:
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
+                let pinned = self.menuBarViewModel.isOverlayPinned
                 self.overlayController.show(
-                    countdownText: self.failSafeManager.countdownText
+                    failSafeManager: self.failSafeManager,
+                    pinned: pinned
                 ) { [weak self] in
-                    self?.menuBarViewModel.toggleOverlayPin()
+                    guard let self = self else { return }
+                    self.menuBarViewModel.toggleOverlayPin()
+                    self.overlayController.setPinned(self.menuBarViewModel.isOverlayPinned)
                 }
             }
-        case .exiting, .normal:
+        case .exiting:
+            overlayController.dismiss()
+            DispatchQueue.main.async { [weak self] in
+                self?.stateMachine.transition(to: .normal)
+            }
+        case .normal:
             overlayController.dismiss()
         default:
             break
