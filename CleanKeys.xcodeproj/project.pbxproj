@@ -21,6 +21,7 @@
 		A1001012 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001012 /* MenuBarView.swift */; };
 		A1001013 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001013 /* OverlayWindow.swift */; };
 		A1001014 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001014 /* ConfirmationDialog.swift */; };
+		A1001018 /* WelcomePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001018 /* WelcomePanel.swift */; };
 		A1001017 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2001017 /* PrivacyInfo.xcprivacy */; };
 		A1001020 /* StateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001020 /* StateMachineTests.swift */; };
 		A1001021 /* FailSafeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001021 /* FailSafeTests.swift */; };
@@ -53,6 +54,7 @@
 		A2001012 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		A2001013 /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		A2001014 /* ConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialog.swift; sourceTree = "<group>"; };
+		A2001018 /* WelcomePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomePanel.swift; sourceTree = "<group>"; };
 		A2001015 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2001016 /* CleanKeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CleanKeys.entitlements; sourceTree = "<group>"; };
 		A2001017 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				A2001012 /* MenuBarView.swift */,
 				A2001013 /* OverlayWindow.swift */,
 				A2001014 /* ConfirmationDialog.swift */,
+				A2001018 /* WelcomePanel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				A1001012 /* MenuBarView.swift in Sources */,
 				A1001013 /* OverlayWindow.swift in Sources */,
 				A1001014 /* ConfirmationDialog.swift in Sources */,
+				A1001018 /* WelcomePanel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,7 +3,8 @@ import AppKit
 
 class AppLifecycle: NSObject, NSApplicationDelegate {
 
-    static let shared = AppLifecycle()
+    private static let menuBarGuideDefaultsKey = "didShowMenuBarGuide"
+    private static let bundleIdentifier = "com.scientist.CleanKeys"
 
     let stateMachine: StateMachine
     let eventTapService: EventTapService
@@ -37,10 +38,13 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        enforceSingleton()
+        guard acquireSingleton() else { return }
+
+        NSApp.activate(ignoringOtherApps: true)
         restoreState()
         systemObserver.startObserving()
         watchdogHeartbeat.start()
+        showMenuBarGuideIfNeeded()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -93,35 +97,64 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func enforceSingleton() {
-        guard createLockFile() else {
+    /// Returns false when another instance is already running (this process will terminate).
+    private func acquireSingleton() -> Bool {
+        let currentPID = ProcessInfo.processInfo.processIdentifier
+        let otherInstances = NSRunningApplication.runningApplications(withBundleIdentifier: Self.bundleIdentifier)
+            .filter { $0.processIdentifier != currentPID }
+
+        if let existing = otherInstances.first {
+            existing.activate(options: [.activateIgnoringOtherApps, .activateAllWindows])
             showAlert(
                 title: "CleanKeys Already Running",
-                message: "Another instance of CleanKeys is already active."
+                message: """
+                Another copy of CleanKeys is already active.
+
+                Look for the keyboard icon in the menu bar (top of the screen). If you do not see it, open the menu bar overflow (») near the clock.
+
+                Quit the running copy from that menu (Quit CleanKeys) before starting again from Xcode.
+                """
             )
             NSApp.terminate(nil)
-            exit(0)
+            return false
         }
-    }
 
-    private func createLockFile() -> Bool {
+        removeStaleLockFile()
         do {
-            if FileManager.default.fileExists(atPath: singletonLockPath) {
-                let content = try String(contentsOfFile: singletonLockPath, encoding: .utf8)
-                if let pid = Int(content) {
-                    let isRunning = NSRunningApplication.runningApplications(withBundleIdentifier: "com.scientist.CleanKeys").contains {
-                        $0.processIdentifier == pid
-                    }
-                    if isRunning { return false }
-                }
-            }
-
-            let pidString = String(ProcessInfo.processInfo.processIdentifier)
+            let pidString = String(currentPID)
             try pidString.write(toFile: singletonLockPath, atomically: true, encoding: .utf8)
             return true
         } catch {
+            showAlert(
+                title: "CleanKeys Could Not Start",
+                message: "Could not create the instance lock file at \(singletonLockPath). Try quitting any stuck CleanKeys process and run again."
+            )
+            NSApp.terminate(nil)
             return false
         }
+    }
+
+    private func removeStaleLockFile() {
+        guard FileManager.default.fileExists(atPath: singletonLockPath) else { return }
+        guard let content = try? String(contentsOfFile: singletonLockPath, encoding: .utf8),
+              let pid = Int(content.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+            try? FileManager.default.removeItem(atPath: singletonLockPath)
+            return
+        }
+
+        let holderStillRunning = NSRunningApplication.runningApplications(withBundleIdentifier: Self.bundleIdentifier)
+            .contains { $0.processIdentifier == pid }
+
+        if !holderStillRunning {
+            try? FileManager.default.removeItem(atPath: singletonLockPath)
+        }
+    }
+
+    private func showMenuBarGuideIfNeeded() {
+        guard !UserDefaults.standard.bool(forKey: Self.menuBarGuideDefaultsKey) else { return }
+        UserDefaults.standard.set(true, forKey: Self.menuBarGuideDefaultsKey)
+
+        WelcomePanelController.shared.show()
     }
 
     private func removeLockFile() {
