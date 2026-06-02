@@ -4,7 +4,7 @@ import Combine
 
 class OverlayWindowController: ObservableObject {
 
-    private var window: NSWindow?
+    private var window: NSPanel?
     private var autoHideTimer: Timer?
     @Published var isPinned: Bool = false
 
@@ -14,37 +14,38 @@ class OverlayWindowController: ObservableObject {
         isPinned = pinned
         let overlayViewModel = OverlayViewModel(failSafeManager: failSafeManager, onPinToggle: onPinToggle)
         let contentView = OverlayView(viewModel: overlayViewModel)
-            .frame(minWidth: 320, maxWidth: .infinity, minHeight: 180, maxHeight: .infinity)
+            .frame(width: 380)
 
         let hostingView = NSHostingView(rootView: contentView)
-        hostingView.translatesAutoresizingMaskIntoConstraints = false
+        hostingView.appearance = NSAppearance(named: .aqua)
 
         let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 400, height: 200),
-            styleMask: [.titled, .closable, .fullSizeContentView],
+            contentRect: NSRect(x: 0, y: 0, width: 400, height: 280),
+            styleMask: [.nonactivatingPanel, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
         panel.contentView = hostingView
         panel.level = .floating
-        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-        panel.titlebarAppearsTransparent = true
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
         panel.isMovableByWindowBackground = true
         panel.hasShadow = true
-        panel.title = "Cleaning Mode"
+        panel.backgroundColor = .clear
+        panel.isOpaque = false
+        panel.hidesOnDeactivate = false
 
         guard let screen = NSScreen.main else { return }
         let panelFrame = panel.frame
         panel.setFrameOrigin(NSPoint(
-            x: screen.frame.maxX - panelFrame.width - 20,
-            y: screen.frame.maxY - panelFrame.height - 80
+            x: screen.frame.midX - panelFrame.width / 2,
+            y: screen.frame.midY - panelFrame.height / 2
         ))
 
-        panel.makeKeyAndOrderFront(nil)
+        panel.orderFrontRegardless()
         self.window = panel
 
         if !isPinned {
-            autoHideTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] _ in
+            autoHideTimer = Timer.scheduledTimer(withTimeInterval: 12.0, repeats: false) { [weak self] _ in
                 self?.dismiss()
             }
         }
@@ -69,87 +70,111 @@ class OverlayWindowController: ObservableObject {
 struct OverlayView: View {
     @ObservedObject var viewModel: OverlayViewModel
 
+    private let textPrimary = Color(red: 0.11, green: 0.11, blue: 0.13)
+    private let textSecondary = Color(red: 0.35, green: 0.36, blue: 0.4)
+    private let cardBackground = Color.white
+    private let bannerRed = Color(red: 0.85, green: 0.15, blue: 0.18)
+
     var body: some View {
-        VStack(spacing: 16) {
-            headerSection
-            countdownSection
-            instructionsSection
-            pinButton
+        VStack(spacing: 0) {
+            banner
+            VStack(alignment: .leading, spacing: 16) {
+                countdownSection
+                instructionsSection
+                pinButton
+            }
+            .padding(20)
         }
-        .padding()
-        .background(overlayBackground)
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(cardBackground)
+                .shadow(color: .black.opacity(0.28), radius: 24, y: 10)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(Color.black.opacity(0.08), lineWidth: 1)
+        )
+        .preferredColorScheme(.light)
     }
 
-    private var headerSection: some View {
+    private var banner: some View {
         HStack(spacing: 12) {
             Image(systemName: "keyboard.fill")
-                .font(.largeTitle)
-                .foregroundColor(.red)
-            VStack(alignment: .leading) {
+                .font(.title)
+                .foregroundStyle(.white)
+            VStack(alignment: .leading, spacing: 2) {
                 Text("Cleaning Mode Active")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                Text("Keyboard, volume, and brightness are suppressed")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                Text("Keyboard · volume · brightness blocked")
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.9))
             }
+            Spacer()
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 14)
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(bannerRed)
+                .padding(.bottom, -14)
+        )
     }
 
     private var countdownSection: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 10) {
             Image(systemName: "timer")
-                .foregroundColor(.orange)
-            Text(viewModel.countdownText)
-                .font(.system(size: 32, weight: .bold, design: .monospaced))
-                .foregroundColor(.primary)
+                .font(.title2)
+                .foregroundStyle(.orange)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Auto-exit in")
+                    .font(.caption)
+                    .foregroundStyle(textSecondary)
+                Text(viewModel.countdownText)
+                    .font(.system(size: 36, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(textPrimary)
+            }
+            Spacer()
         }
     }
 
     private var instructionsSection: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("How to exit:")
-                .font(.caption)
-                .foregroundColor(.secondary)
-            BulletPoint(text: "Click CleanKeys menu bar icon → Exit")
-            BulletPoint(text: "Hold Control + Shift + Escape")
-            BulletPoint(text: "Volume and brightness keys are blocked")
-            BulletPoint(text: "Wait for the auto-timeout")
+        VStack(alignment: .leading, spacing: 8) {
+            Text("How to exit")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(textPrimary)
+            BulletPoint(text: "Menu bar keyboard icon → Exit Cleaning Mode", textColor: textSecondary)
+            BulletPoint(text: "Hold Control + Shift + Escape", textColor: textSecondary)
+            BulletPoint(text: "Wait for the countdown above", textColor: textSecondary)
         }
     }
 
     private var pinButton: some View {
         Button(action: { viewModel.onPinToggle() }) {
-            HStack(spacing: 6) {
-                Image(systemName: "pin")
-                Text("Pin Overlay")
-            }
-            .font(.caption)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(Color.accentColor.opacity(0.1))
-            .cornerRadius(6)
+            Label("Keep this window visible", systemImage: "pin.fill")
+                .font(.subheadline.weight(.medium))
         }
-        .buttonStyle(.borderless)
-    }
-
-    private var overlayBackground: some View {
-        RoundedRectangle(cornerRadius: 12)
-            .fill(Color.white.opacity(0.95))
-            .shadow(radius: 20)
+        .buttonStyle(.borderedProminent)
+        .tint(bannerRed)
+        .frame(maxWidth: .infinity)
     }
 }
 
 struct BulletPoint: View {
     let text: String
+    var textColor: Color = Color(red: 0.35, green: 0.36, blue: 0.4)
 
     var body: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "circle.fill")
-                .font(.caption2)
-                .foregroundColor(.accentColor)
-            Text(text)
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "checkmark.circle.fill")
                 .font(.caption)
+                .foregroundStyle(.green)
+                .padding(.top, 2)
+            Text(text)
+                .font(.subheadline)
+                .foregroundStyle(textColor)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }

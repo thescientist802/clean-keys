@@ -126,7 +126,9 @@ class MenuBarViewModel: ObservableObject {
     }
 
     private func handleEventTapFailure() {
-        activationError = "Could not block keyboard input. Grant Input Monitoring and try again."
+        activationError = """
+        Input blocking could not start. In System Settings → Input Monitoring, enable CleanKeys for the build you are running (Xcode may list several). Then quit and reopen the app.
+        """
         showInputMonitoringSetup()
         if stateMachine.state == .cleaning {
             _ = stateMachine.transition(to: .exiting)

@@ -2,12 +2,18 @@ import Foundation
 import CoreGraphics
 import Carbon
 
-class EventTapService {
+/// Installs a session event tap on a dedicated run loop thread (required for reliable CGEvent taps).
+final class EventTapService {
 
     fileprivate let stateMachine: StateMachine
+
+    private var tapThread: Thread?
     private var tap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
+    private let stateLock = NSLock()
     private var isRunning = false
+    private var shouldStopTapLoop = false
+    private var tapThreadFinished = DispatchSemaphore(value: 0)
 
     private var activeKeyCodes: Set<CGKeyCode> = []
     private let patternDetectionWindow: TimeInterval = 0.5
@@ -22,63 +28,126 @@ class EventTapService {
     func start() -> Bool {
         guard !isRunning else { return true }
 
-        activeKeyCodes.removeAll()
-        lastKeyDownTimes.removeAll()
+        let ready = DispatchSemaphore(value: 0)
+        var installSucceeded = false
 
-        let eventMask = CGEventMask(eventTypes: [
-            .keyDown, .keyUp, .flagsChanged, SystemKeyEventFilter.systemDefinedEventType
-        ])
-        guard let eventTap = CGEvent.tapCreate(
-            tap: .cgSessionEventTap,
-            place: .headInsertEventTap,
-            options: .defaultTap,
-            eventsOfInterest: eventMask,
-            callback: eventTapCallback,
-            userInfo: UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
-        ) else {
-            print("Failed to create event tap")
-            return false
+        let thread = Thread { [weak self] in
+            guard let self else {
+                ready.signal()
+                return
+            }
+            installSucceeded = self.installTapOnCurrentRunLoop()
+            ready.signal()
+            guard installSucceeded else { return }
+
+            while !self.shouldStopTapLoop {
+                RunLoop.current.run(mode: .default, before: Date(timeIntervalSinceNow: 0.1))
+            }
+            self.uninstallTapFromCurrentRunLoop()
+            self.tapThreadFinished.signal()
         }
+        thread.name = "com.scientist.CleanKeys.EventTap"
+        thread.qualityOfService = .userInteractive
+        tapThread = thread
+        thread.start()
 
-        tap = eventTap
-        runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0)
-
-        if let source = runLoopSource {
-            CFRunLoopAddSource(CFRunLoopGetCurrent(), source, CFRunLoopMode.commonModes)
+        ready.wait()
+        if installSucceeded {
+            stateLock.lock()
+            isRunning = true
+            shouldStopTapLoop = false
+            stateLock.unlock()
+        } else {
+            tapThread = nil
+            shouldStopTapLoop = true
         }
-
-        CGEvent.tapEnable(tap: eventTap, enable: true)
-        isRunning = true
-        return true
+        return installSucceeded
     }
 
     func stop() {
-        guard isRunning else { return }
-
-        if let tap = tap {
-            CGEvent.tapEnable(tap: tap, enable: false)
-        }
-
-        if let source = runLoopSource {
-            CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, CFRunLoopMode.commonModes)
-        }
-
-        tap = nil
-        runLoopSource = nil
+        stateLock.lock()
+        let wasRunning = isRunning
         isRunning = false
+        shouldStopTapLoop = true
+        stateLock.unlock()
+
+        guard wasRunning else {
+            tapThread = nil
+            return
+        }
+
+        _ = tapThreadFinished.wait(timeout: .now() + 2)
+        tapThreadFinished = DispatchSemaphore(value: 0)
+        tapThread = nil
+
         activeKeyCodes.removeAll()
         lastKeyDownTimes.removeAll()
     }
 
     func reinstall() {
         stop()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.start()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
+            _ = self?.start()
         }
     }
 
+    // MARK: - Tap installation
+
+    private func installTapOnCurrentRunLoop() -> Bool {
+        shouldStopTapLoop = false
+
+        let eventMask = CGEventMask(eventTypes: [
+            .keyDown, .keyUp, .flagsChanged, SystemKeyEventFilter.systemDefinedEventType
+        ])
+
+        let configurations: [(CGEventTapLocation, CGEventTapPlacement)] = [
+            (.cgSessionEventTap, .headInsertEventTap),
+            (.cgAnnotatedSessionEventTap, .headInsertEventTap),
+        ]
+
+        for (location, placement) in configurations {
+            guard let eventTap = CGEvent.tapCreate(
+                tap: location,
+                place: placement,
+                options: .defaultTap,
+                eventsOfInterest: eventMask,
+                callback: eventTapCallback,
+                userInfo: UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
+            ) else {
+                continue
+            }
+
+            tap = eventTap
+            runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0)
+            if let source = runLoopSource {
+                CFRunLoopAddSource(CFRunLoopGetCurrent(), source, .commonModes)
+            }
+            CGEvent.tapEnable(tap: eventTap, enable: true)
+            return true
+        }
+
+        fputs("CleanKeys: Failed to create event tap (check Input Monitoring for this app build)\n", stderr)
+        return false
+    }
+
+    private func uninstallTapFromCurrentRunLoop() {
+        if let tap {
+            CGEvent.tapEnable(tap: tap, enable: false)
+        }
+        if let source = runLoopSource {
+            CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, .commonModes)
+        }
+        tap = nil
+        runLoopSource = nil
+    }
+
+    // MARK: - Fail-safe pattern
+
     @discardableResult
     func isFailSafeDetected(event: CGEvent) -> Bool {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+
         let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
         let now = Date()
 
@@ -111,11 +180,11 @@ class EventTapService {
         }
 
         let hasEscape = activeKeyCodes.contains(escapeKey) &&
-            (now.timeIntervalSince(lastKeyDownTimes[escapeKey] ?? Date.distantPast) <= patternDetectionWindow)
+            (now.timeIntervalSince(lastKeyDownTimes[escapeKey] ?? .distantPast) <= patternDetectionWindow)
         let hasCtrl = activeKeyCodes.contains(ctrlKey) &&
-            (now.timeIntervalSince(lastKeyDownTimes[ctrlKey] ?? Date.distantPast) <= patternDetectionWindow)
+            (now.timeIntervalSince(lastKeyDownTimes[ctrlKey] ?? .distantPast) <= patternDetectionWindow)
         let hasShift = activeKeyCodes.contains(shiftKey) &&
-            (now.timeIntervalSince(lastKeyDownTimes[shiftKey] ?? Date.distantPast) <= patternDetectionWindow)
+            (now.timeIntervalSince(lastKeyDownTimes[shiftKey] ?? .distantPast) <= patternDetectionWindow)
 
         return hasEscape && hasCtrl && hasShift
     }
@@ -135,8 +204,13 @@ class EventTapService {
 
         switch newState {
         case .cleaning:
-            if !start() {
-                NotificationCenter.default.post(name: .eventTapFailed, object: self)
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                guard let self else { return }
+                if !self.start() {
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .eventTapFailed, object: self)
+                    }
+                }
             }
         case .exiting, .normal:
             stop()
@@ -159,6 +233,16 @@ private func eventTapCallback(
     event: CGEvent,
     userInfo: UnsafeMutableRawPointer?
 ) -> Unmanaged<CGEvent>? {
+
+    if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
+        if let userInfo {
+            let service = Unmanaged<EventTapService>.fromOpaque(userInfo).takeUnretainedValue()
+            if let tap = service.tapForReenable() {
+                CGEvent.tapEnable(tap: tap, enable: true)
+            }
+        }
+        return Unmanaged.passUnretained(event)
+    }
 
     guard let userInfo else { return Unmanaged.passUnretained(event) }
     let service = Unmanaged<EventTapService>.fromOpaque(userInfo).takeUnretainedValue()
@@ -185,14 +269,22 @@ private func eventTapCallback(
     return Unmanaged.passUnretained(event)
 }
 
+// MARK: - Tap recovery
+
+extension EventTapService {
+    fileprivate func tapForReenable() -> CFMachPort? {
+        tap
+    }
+}
+
 // MARK: - CGEventMask Extension
 
 extension CGEventMask {
     init(eventTypes types: [CGEventType]) {
-        var value: CGEventMask = 0
+        var mask: UInt64 = 0
         for eventType in types {
-            value |= CGEventMask(1 << eventType.rawValue)
+            mask |= 1 << eventType.rawValue
         }
-        self.init(value)
+        self = CGEventMask(mask)
     }
 }

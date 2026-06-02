@@ -119,7 +119,7 @@ private struct PermissionPanelView: View {
             step(1, "Click **Request Permission** below (macOS may show a prompt).")
             step(2, "Click **Open System Settings**, find **\(appName)**, and turn it **on**.")
             step(3, "Return here and click **Check Again**.")
-            Text("Running from Xcode? You may see several \(appName) entries — enable the one you just launched (newest build).")
+            Text("Running from Xcode? Enable the \(appName) row for the build you just ran (you may see multiple). After toggling, quit CleanKeys and run again from Xcode.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
