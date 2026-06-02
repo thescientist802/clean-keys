@@ -25,6 +25,7 @@
 		A1001019 /* HardwareControlsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001019 /* HardwareControlsService.swift */; };
 		A1001023 /* SystemKeyEventFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001023 /* SystemKeyEventFilter.swift */; };
 		A1001024 /* HelpPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001024 /* HelpPanel.swift */; };
+		A1001025 /* PermissionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001025 /* PermissionPanel.swift */; };
 		A1001017 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2001017 /* PrivacyInfo.xcprivacy */; };
 		A1001020 /* StateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001020 /* StateMachineTests.swift */; };
 		A1001021 /* FailSafeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001021 /* FailSafeTests.swift */; };
@@ -61,6 +62,7 @@
 		A2001019 /* HardwareControlsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardwareControlsService.swift; sourceTree = "<group>"; };
 		A2001023 /* SystemKeyEventFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemKeyEventFilter.swift; sourceTree = "<group>"; };
 		A2001024 /* HelpPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPanel.swift; sourceTree = "<group>"; };
+		A2001025 /* PermissionPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPanel.swift; sourceTree = "<group>"; };
 		A2001015 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2001016 /* CleanKeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CleanKeys.entitlements; sourceTree = "<group>"; };
 		A2001017 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				A2001014 /* ConfirmationDialog.swift */,
 				A2001018 /* WelcomePanel.swift */,
 				A2001024 /* HelpPanel.swift */,
+				A2001025 /* PermissionPanel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				A1001019 /* HardwareControlsService.swift in Sources */,
 				A1001023 /* SystemKeyEventFilter.swift in Sources */,
 				A1001024 /* HelpPanel.swift in Sources */,
+				A1001025 /* PermissionPanel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

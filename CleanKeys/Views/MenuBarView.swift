@@ -7,6 +7,9 @@ struct MenuBarView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             statusHeader
+            if !viewModel.isInputMonitoringGranted {
+                permissionBanner
+            }
             if let error = viewModel.activationError {
                 Text(error)
                     .font(.caption)
@@ -70,13 +73,27 @@ struct MenuBarView: View {
         }
     }
 
+    private var permissionBanner: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label("Input Monitoring is off", systemImage: "shield.slash")
+                .font(.caption.bold())
+                .foregroundColor(.orange)
+            Button("Set Up Input Monitoring…") {
+                viewModel.showInputMonitoringSetup()
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.small)
+        }
+    }
+
     private var menuItems: some View {
         VStack(alignment: .leading, spacing: 4) {
             if viewModel.state == .cleaning {
                 exitButton
                 overlayPinButton
-            } else if viewModel.canActivateCleaningMode {
+            } else if viewModel.state == .normal {
                 activateButton
+                    .disabled(!viewModel.isInputMonitoringGranted)
             } else {
                 Text("Please wait…")
                     .font(.caption)

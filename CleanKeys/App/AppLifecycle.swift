@@ -4,6 +4,7 @@ import AppKit
 class AppLifecycle: NSObject, NSApplicationDelegate {
 
     private static let menuBarGuideDefaultsKey = "didShowMenuBarGuide"
+    private static let permissionGuideDefaultsKey = "didShowPermissionGuide"
     private static let bundleIdentifier = "com.scientist.CleanKeys"
 
     let stateMachine: StateMachine
@@ -46,6 +47,7 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
         systemObserver.startObserving()
         watchdogHeartbeat.start()
         showMenuBarGuideIfNeeded()
+        showPermissionGuideIfNeeded()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -125,6 +127,18 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
         UserDefaults.standard.set(true, forKey: Self.menuBarGuideDefaultsKey)
 
         WelcomePanelController.shared.show()
+    }
+
+    private func showPermissionGuideIfNeeded() {
+        permissionManager.refreshInputMonitoringStatus()
+        guard !permissionManager.isInputMonitoringGranted else { return }
+        guard !UserDefaults.standard.bool(forKey: Self.permissionGuideDefaultsKey) else { return }
+
+        UserDefaults.standard.set(true, forKey: Self.permissionGuideDefaultsKey)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { [weak self] in
+            guard let self, !self.permissionManager.isInputMonitoringGranted else { return }
+            PermissionPanelController.shared.show(permissionManager: self.permissionManager, onComplete: nil)
+        }
     }
 
     private func restoreState() {

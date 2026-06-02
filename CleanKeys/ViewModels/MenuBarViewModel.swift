@@ -9,6 +9,7 @@ class MenuBarViewModel: ObservableObject {
     @Published var isOverlayPinned: Bool = Settings.shared.overlayPinned
     @Published var statusDetail: String = AppState.normal.statusDetail
     @Published var activationError: String?
+    @Published var isInputMonitoringGranted: Bool = false
 
     private let stateMachine: StateMachine
     private let failSafeManager: FailSafeManager
@@ -26,6 +27,7 @@ class MenuBarViewModel: ObservableObject {
         self.failSafeManager = failSafeManager
         self.permissionManager = permissionManager
         self.overlayController = overlayController
+        self.isInputMonitoringGranted = permissionManager.isInputMonitoringGranted
 
         stateMachine.$state
             .receive(on: RunLoop.main)
@@ -45,16 +47,33 @@ class MenuBarViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
+        permissionManager.$isInputMonitoringGranted
+            .receive(on: RunLoop.main)
+            .sink { [weak self] granted in
+                self?.isInputMonitoringGranted = granted
+                if granted {
+                    self?.activationError = nil
+                }
+            }
+            .store(in: &cancellables)
+
         NotificationCenter.default.publisher(for: .eventTapFailed)
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.handleEventTapFailure()
             }
             .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.permissionManager.refreshInputMonitoringStatus()
+            }
+            .store(in: &cancellables)
     }
 
     var canActivateCleaningMode: Bool {
-        state == .normal
+        state == .normal && isInputMonitoringGranted
     }
 
     func confirmActivation() {
@@ -69,9 +88,8 @@ class MenuBarViewModel: ObservableObject {
             return
         }
 
-        guard permissionManager.ensureInputMonitoringAccess() else {
-            activationError = "Input Monitoring permission is required. Enable CleanKeys in System Settings → Privacy & Security → Input Monitoring, then try again."
-            permissionManager.openInputMonitoringSettings()
+        guard isInputMonitoringGranted else {
+            showInputMonitoringSetup()
             return
         }
 
@@ -100,9 +118,16 @@ class MenuBarViewModel: ObservableObject {
         HelpPanelController.shared.show()
     }
 
+    func showInputMonitoringSetup() {
+        PermissionPanelController.shared.show(permissionManager: permissionManager) { [weak self] granted in
+            guard granted else { return }
+            self?.activationError = nil
+        }
+    }
+
     private func handleEventTapFailure() {
-        activationError = "Could not block keyboard input. Grant Input Monitoring permission and activate again."
-        permissionManager.openInputMonitoringSettings()
+        activationError = "Could not block keyboard input. Grant Input Monitoring and try again."
+        showInputMonitoringSetup()
         if stateMachine.state == .cleaning {
             _ = stateMachine.transition(to: .exiting)
         }

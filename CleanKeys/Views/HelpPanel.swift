@@ -15,12 +15,12 @@ final class HelpPanelController {
         let contentView = HelpPanelView {
             self.dismiss()
         }
-        .frame(width: 440, height: 340)
+        .frame(width: 440, height: 400)
 
         let hostingView = NSHostingView(rootView: contentView)
 
         let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 440, height: 340),
+            contentRect: NSRect(x: 0, y: 0, width: 440, height: 400),
             styleMask: [.titled, .closable, .fullSizeContentView],
             backing: .buffered,
             defer: false
@@ -60,6 +60,16 @@ private struct HelpPanelView: View {
                 .foregroundStyle(.secondary)
 
             Group {
+                helpSection(
+                    title: "Input Monitoring (required once)",
+                    items: [
+                        "Open the menu → Set Up Input Monitoring…",
+                        "Click Request Permission, then Open System Settings.",
+                        "Enable CleanKeys in Privacy & Security → Input Monitoring.",
+                        "Return to CleanKeys and click Check Again."
+                    ]
+                )
+
                 helpSection(
                     title: "Enter cleaning mode",
                     items: [

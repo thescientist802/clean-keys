@@ -1,37 +1,57 @@
 import Foundation
 import AppKit
 import ApplicationServices
+import Combine
 
-class PermissionManager {
+final class PermissionManager: ObservableObject {
+
+    @Published private(set) var isInputMonitoringGranted: Bool = false
 
     var isAccessibilityGranted: Bool {
         AXIsProcessTrusted()
     }
 
-    var isInputMonitoringGranted: Bool {
-        checkInputMonitoringPermission()
+    init() {
+        refreshInputMonitoringStatus()
     }
 
-    func requestAllPermissions(completion: @escaping (Bool) -> Void) {
-        let accessibility = requestAccessibility()
-        completion(accessibility)
-    }
-
-    private func requestAccessibility() -> Bool {
-        if AXIsProcessTrusted() { return true }
-
-        let options: [String: Any] = [
-            kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true
-        ]
-        AXIsProcessTrustedWithOptions(options as CFDictionary)
-        return AXIsProcessTrusted()
-    }
-
-    private func checkInputMonitoringPermission() -> Bool {
-        if #available(macOS 10.15, *) {
-            return CGPreflightListenEventAccess()
+    func refreshInputMonitoringStatus() {
+        let granted = checkInputMonitoringPermission()
+        if isInputMonitoringGranted != granted {
+            isInputMonitoringGranted = granted
         }
-        return true
+    }
+
+    /// Shows the system prompt (if available) asking the user to allow listen-event access.
+    func requestInputMonitoringAccess() {
+        if #available(macOS 10.15, *) {
+            CGRequestListenEventAccess()
+        }
+        refreshInputMonitoringStatus()
+    }
+
+    /// Opens Privacy & Security → Input Monitoring.
+    func openInputMonitoringSettings() {
+        let candidates = [
+            "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent",
+            "x-apple.systempreferences:com.apple.preference.security?Privacy_InputMonitoring",
+        ]
+        for scheme in candidates {
+            guard let url = URL(string: scheme) else { continue }
+            if NSWorkspace.shared.open(url) { return }
+        }
+    }
+
+    /// Returns true when the app can install a session event tap (required for cleaning mode).
+    @discardableResult
+    func ensureInputMonitoringAccess() -> Bool {
+        if checkInputMonitoringPermission() {
+            refreshInputMonitoringStatus()
+            return true
+        }
+        requestInputMonitoringAccess()
+        refreshInputMonitoringStatus()
+        return isInputMonitoringGranted
     }
 
     func openAccessibilitySettings() {
@@ -40,17 +60,8 @@ class PermissionManager {
         }
     }
 
-    func openInputMonitoringSettings() {
-        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_InputMonitoring") {
-            NSWorkspace.shared.open(url)
-        }
-    }
-
-    /// Returns true when the app can install a session event tap (required for cleaning mode).
-    func ensureInputMonitoringAccess() -> Bool {
+    private func checkInputMonitoringPermission() -> Bool {
         if #available(macOS 10.15, *) {
-            if CGPreflightListenEventAccess() { return true }
-            CGRequestListenEventAccess()
             return CGPreflightListenEventAccess()
         }
         return true
