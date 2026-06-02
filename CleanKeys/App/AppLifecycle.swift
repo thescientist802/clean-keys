@@ -16,8 +16,6 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
     let menuBarViewModel: MenuBarViewModel
     let overlayController: OverlayWindowController
 
-    private let singletonLockPath = "/tmp/com.scientist.CleanKeys.lock"
-
     override init() {
         stateMachine = StateMachine()
         eventTapService = EventTapService(stateMachine: stateMachine)
@@ -55,7 +53,6 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
             overlayController.dismiss()
         }
         watchdogHeartbeat.stop()
-        removeLockFile()
     }
 
     private func setupStateObserver() {
@@ -119,35 +116,7 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
             return false
         }
 
-        removeStaleLockFile()
-        do {
-            let pidString = String(currentPID)
-            try pidString.write(toFile: singletonLockPath, atomically: true, encoding: .utf8)
-            return true
-        } catch {
-            showAlert(
-                title: "CleanKeys Could Not Start",
-                message: "Could not create the instance lock file at \(singletonLockPath). Try quitting any stuck CleanKeys process and run again."
-            )
-            NSApp.terminate(nil)
-            return false
-        }
-    }
-
-    private func removeStaleLockFile() {
-        guard FileManager.default.fileExists(atPath: singletonLockPath) else { return }
-        guard let content = try? String(contentsOfFile: singletonLockPath, encoding: .utf8),
-              let pid = Int(content.trimmingCharacters(in: .whitespacesAndNewlines)) else {
-            try? FileManager.default.removeItem(atPath: singletonLockPath)
-            return
-        }
-
-        let holderStillRunning = NSRunningApplication.runningApplications(withBundleIdentifier: Self.bundleIdentifier)
-            .contains { $0.processIdentifier == pid }
-
-        if !holderStillRunning {
-            try? FileManager.default.removeItem(atPath: singletonLockPath)
-        }
+        return true
     }
 
     private func showMenuBarGuideIfNeeded() {
@@ -155,10 +124,6 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
         UserDefaults.standard.set(true, forKey: Self.menuBarGuideDefaultsKey)
 
         WelcomePanelController.shared.show()
-    }
-
-    private func removeLockFile() {
-        try? FileManager.default.removeItem(atPath: singletonLockPath)
     }
 
     private func restoreState() {
