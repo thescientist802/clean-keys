@@ -15,11 +15,26 @@ class StateMachine: ObservableObject {
             .appendingPathComponent("state.json")
     }()
 
-    func transition(to newState: AppState) {
-        guard isValidTransition(from: state, to: newState) else { return }
+    @discardableResult
+    func transition(to newState: AppState) -> Bool {
+        guard isValidTransition(from: state, to: newState) else { return false }
         state = newState
         persistState()
         NotificationCenter.default.post(name: .stateMachineDidChange, object: self, userInfo: ["newState": newState])
+        return true
+    }
+
+    /// Resets interrupted transitions left on disk (e.g. stuck on `.exiting`).
+    func normalizeToNormalIfNeeded() {
+        switch state {
+        case .normal:
+            break
+        case .cleaning:
+            _ = transition(to: .exiting)
+            _ = transition(to: .normal)
+        case .activated, .exiting:
+            _ = transition(to: .normal)
+        }
     }
 
     func restorePersistedState() -> Bool {
@@ -69,4 +84,5 @@ struct PersistedState: Codable {
 
 extension Notification.Name {
     static let stateMachineDidChange = Notification.Name("stateMachineDidChange")
+    static let eventTapFailed = Notification.Name("eventTapFailed")
 }

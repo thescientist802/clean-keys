@@ -12,6 +12,7 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
     let permissionManager: PermissionManager
     let systemObserver: SystemObserver
     let watchdogHeartbeat: WatchdogHeartbeat
+    private let hardwareControlsService: HardwareControlsService
 
     let menuBarViewModel: MenuBarViewModel
     let overlayController: OverlayWindowController
@@ -23,10 +24,12 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
         permissionManager = PermissionManager()
         systemObserver = SystemObserver(stateMachine: stateMachine, eventTapService: eventTapService)
         watchdogHeartbeat = WatchdogHeartbeat()
+        hardwareControlsService = HardwareControlsService(stateMachine: stateMachine)
         overlayController = OverlayWindowController()
         menuBarViewModel = MenuBarViewModel(
             stateMachine: stateMachine,
             failSafeManager: failSafeManager,
+            permissionManager: permissionManager,
             overlayController: overlayController
         )
 
@@ -84,9 +87,7 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
             }
         case .exiting:
             overlayController.dismiss()
-            DispatchQueue.main.async { [weak self] in
-                self?.stateMachine.transition(to: .normal)
-            }
+            _ = stateMachine.transition(to: .normal)
         case .normal:
             overlayController.dismiss()
         default:
@@ -128,12 +129,15 @@ class AppLifecycle: NSObject, NSApplicationDelegate {
 
     private func restoreState() {
         let restored = stateMachine.restorePersistedState()
-        if restored && stateMachine.state == .cleaning {
-            stateMachine.transition(to: .exiting)
-            stateMachine.transition(to: .normal)
+        guard restored else { return }
+
+        let wasCleaning = stateMachine.state == .cleaning
+        stateMachine.normalizeToNormalIfNeeded()
+
+        if wasCleaning {
             showAlert(
                 title: "CleanKeys Recovered",
-                message: "CleanKeys was unexpectedly terminated while in cleaning mode.\nKeyboard input has been restored."
+                message: "CleanKeys was unexpectedly terminated while in cleaning mode.\nKeyboard, volume, and brightness have been restored."
             )
         }
     }

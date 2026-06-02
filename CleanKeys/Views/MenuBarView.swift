@@ -7,17 +7,23 @@ struct MenuBarView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             statusHeader
+            if let error = viewModel.activationError {
+                Text(error)
+                    .font(.caption)
+                    .foregroundColor(.red)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             Divider()
             menuItems
             Divider()
-            quitItem
+            footerRow
         }
         .padding()
-        .frame(width: 280)
+        .frame(width: 300)
     }
 
     private var statusHeader: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Image(systemName: viewModel.state.appIconName)
                     .font(.title2)
@@ -27,8 +33,14 @@ struct MenuBarView: View {
                 Spacer()
                 Text(viewModel.state.displayName)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .fontWeight(viewModel.state == .cleaning ? .bold : .regular)
+                    .foregroundColor(statusColor)
             }
+
+            Text(viewModel.statusDetail)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
 
             if viewModel.state == .cleaning {
                 HStack {
@@ -53,6 +65,7 @@ struct MenuBarView: View {
         switch viewModel.state {
         case .cleaning: return .red
         case .exiting: return .orange
+        case .activated: return .blue
         default: return .green
         }
     }
@@ -62,8 +75,12 @@ struct MenuBarView: View {
             if viewModel.state == .cleaning {
                 exitButton
                 overlayPinButton
-            } else {
+            } else if viewModel.canActivateCleaningMode {
                 activateButton
+            } else {
+                Text("Please wait…")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
         }
     }
@@ -107,9 +124,21 @@ struct MenuBarView: View {
         }
     }
 
-    private var quitItem: some View {
-        Button("Quit CleanKeys") {
-            NSApp.terminate(nil)
+    private var footerRow: some View {
+        HStack {
+            Button {
+                viewModel.showHelp()
+            } label: {
+                Image(systemName: "questionmark.circle")
+            }
+            .buttonStyle(.borderless)
+            .help("How to use CleanKeys")
+
+            Spacer()
+
+            Button("Quit CleanKeys") {
+                NSApp.terminate(nil)
+            }
         }
     }
 }

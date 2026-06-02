@@ -17,10 +17,23 @@ enum AppState: String, Codable, CaseIterable {
 
     var displayName: String {
         switch self {
-        case .normal: return "Normal"
-        case .activated: return "Activated"
+        case .normal: return "Ready"
+        case .activated: return "Activating…"
         case .cleaning: return "Cleaning"
-        case .exiting: return "Exiting"
+        case .exiting: return "Restoring…"
+        }
+    }
+
+    var statusDetail: String {
+        switch self {
+        case .normal:
+            return "Keyboard, volume, and brightness are active."
+        case .activated:
+            return "Starting cleaning mode…"
+        case .cleaning:
+            return "Keyboard, volume, and brightness inputs are blocked."
+        case .exiting:
+            return "Restoring keyboard, volume, and brightness…"
         }
     }
 }

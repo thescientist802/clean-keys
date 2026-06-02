@@ -89,7 +89,7 @@ struct OverlayView: View {
                 Text("Cleaning Mode Active")
                     .font(.title2)
                     .fontWeight(.bold)
-                Text("All keyboard input is suppressed")
+                Text("Keyboard, volume, and brightness are suppressed")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
@@ -112,8 +112,9 @@ struct OverlayView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             BulletPoint(text: "Click CleanKeys menu bar icon → Exit")
-            BulletPoint(text: "Hold Ctrl+Shift+Escape")
-            BulletPoint(text: "Wait for auto-timeout")
+            BulletPoint(text: "Hold Control + Shift + Escape")
+            BulletPoint(text: "Volume and brightness keys are blocked")
+            BulletPoint(text: "Wait for the auto-timeout")
         }
     }
 

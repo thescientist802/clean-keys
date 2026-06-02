@@ -18,13 +18,16 @@ class EventTapService {
         setupStateObserver()
     }
 
-    func start() {
-        guard !isRunning else { return }
+    @discardableResult
+    func start() -> Bool {
+        guard !isRunning else { return true }
 
         activeKeyCodes.removeAll()
         lastKeyDownTimes.removeAll()
 
-        let eventMask = CGEventMask(eventTypes: [.keyDown, .keyUp, .flagsChanged])
+        let eventMask = CGEventMask(eventTypes: [
+            .keyDown, .keyUp, .flagsChanged, SystemKeyEventFilter.systemDefinedEventType
+        ])
         guard let eventTap = CGEvent.tapCreate(
             tap: .cgSessionEventTap,
             place: .headInsertEventTap,
@@ -34,7 +37,7 @@ class EventTapService {
             userInfo: UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         ) else {
             print("Failed to create event tap")
-            return
+            return false
         }
 
         tap = eventTap
@@ -46,6 +49,7 @@ class EventTapService {
 
         CGEvent.tapEnable(tap: eventTap, enable: true)
         isRunning = true
+        return true
     }
 
     func stop() {
@@ -131,7 +135,9 @@ class EventTapService {
 
         switch newState {
         case .cleaning:
-            start()
+            if !start() {
+                NotificationCenter.default.post(name: .eventTapFailed, object: self)
+            }
         case .exiting, .normal:
             stop()
         default:
@@ -157,9 +163,16 @@ private func eventTapCallback(
     guard let userInfo else { return Unmanaged.passUnretained(event) }
     let service = Unmanaged<EventTapService>.fromOpaque(userInfo).takeUnretainedValue()
 
-    guard type == .keyDown || type == .keyUp || type == .flagsChanged else { return Unmanaged.passUnretained(event) }
+    let systemDefined = SystemKeyEventFilter.systemDefinedEventType
+    guard type == .keyDown || type == .keyUp || type == .flagsChanged || type == systemDefined else {
+        return Unmanaged.passUnretained(event)
+    }
 
     if service.stateMachine.state == .cleaning {
+        if type == systemDefined, SystemKeyEventFilter.isHardwareControlEvent(event) {
+            return nil
+        }
+
         if Settings.shared.hardwareFailSafeEnabled, service.isFailSafeDetected(event: event) {
             DispatchQueue.main.async {
                 service.stateMachine.transition(to: .exiting)

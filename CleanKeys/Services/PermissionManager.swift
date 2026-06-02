@@ -45,4 +45,14 @@ class PermissionManager {
             NSWorkspace.shared.open(url)
         }
     }
+
+    /// Returns true when the app can install a session event tap (required for cleaning mode).
+    func ensureInputMonitoringAccess() -> Bool {
+        if #available(macOS 10.15, *) {
+            if CGPreflightListenEventAccess() { return true }
+            CGRequestListenEventAccess()
+            return CGPreflightListenEventAccess()
+        }
+        return true
+    }
 }

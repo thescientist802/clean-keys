@@ -142,7 +142,7 @@ enum DialogMode {
 
     var message: String {
         switch self {
-        case .activate: return "All keyboard input will be suppressed until timeout or manual exit."
+        case .activate: return "Keyboard, volume, and brightness inputs will be suppressed until timeout or manual exit."
         case .exit: return "Keyboard input will be restored."
         }
     }
